@@ -1,7 +1,9 @@
-from gdpc import Editor, Block
+from gdpc import *
 
-editor = Editor(buffering=True)
-editor.placeBlock((0,80,0), Block("stone"))
+from Generator.Constructions.buildings.building import Building
+from utils.DebugTools import GetShape
+from tmp.tempData import _PlotList
 
-
+Building(_PlotList[0])
+Building(_PlotList[1])
 

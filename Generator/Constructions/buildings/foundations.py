@@ -1,21 +1,25 @@
 """Procedural definition of the building's skelette"""
 
-from utils.DevTools import FillPolygon
+from __future__ import annotations
+from Geometry.Edge import Edge
+from utils.DevTools import FillPolygon,DefinePolygonVertices
 
 class Foundation():
-    area = []
+    _edgeList = []
     
-    def __init__(self,area:list):
-        self.area = area
+    def __init__(self,_edgeList:list[Edge]):
+        self._edgeList = _edgeList
+        DefinePolygonVertices(_edgeList)
         self.build()
         
     def build(self):
         self.AdjustEdges()
-        self.FillFloor(self.area)
+        self.FillFloor()
         
     def AdjustEdges(self):
-        for _edge in self.area:
-            pass
+        for _edge in self._edgeList:
+            _angle = _edge.angle
+            print(_angle)
         
-    def FillFloor(self,_edgeList):
-        FillPolygon(_edgeList)
+    def FillFloor(self):
+        FillPolygon(self._edgeList)

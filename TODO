@@ -1,1 +1,3 @@
-fixbug FillPolygon : problem to find polygon vertices
+fixbug FillPolygon : problem missing vertices
+
+add pillars

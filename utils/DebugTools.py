@@ -24,7 +24,12 @@ def GetShape(pos1:tuple[int],pos2:tuple[int]):
                     
     return _vectorList
 
+
 def _GetDirection(a,b):
     if a < b :
         return 1
     return -1
+
+
+def Cut(pos1,pos2):
+    placeCuboid(e,pos1,pos2,Block("minecraft:air"))

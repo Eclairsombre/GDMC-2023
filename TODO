@@ -1,3 +1,3 @@
-fixbug FillPolygon : problem missing vertices
-
+fixbug FillPolygon : problem Edges out of the polygon (try add an original polygon)
+Continue Adjust Angles
 add pillars

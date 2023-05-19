@@ -6,6 +6,7 @@ from gdpc import *
 from gdpc.geometry import *
 
 from Geometry.Edge import Edge
+from Geometry.Polygon import Polygon
 
 e = Editor()
 
@@ -15,22 +16,20 @@ e = Editor()
 def TupleListToEdgeList(_tupleList:list[tuple[int]]):
     _edgeList = []
     for _tuple in _tupleList:
-        _edgeList.append(Edge(_tuple[0],_tuple[1],_tuple[2]))
+        _edgeList.append(Edge(_tuple))
     return _edgeList
 
 
-def FillPolygon(_edgeList:list[Edge],editor=e,_material:Block=Block("minecraft:stone")):
+def FillPolygon(_polygon:Polygon,editor=e,_material:Block=Block("minecraft:stone")):
     """Permit to fill a polygon delimited by vertices with a defusion algorithme"""
-    for _edge in _edgeList:
+    for _edge in _polygon._edgeList:
         placeLine(editor,_edge.GetPositionInTuple(),_edge._nextEdge.GetPositionInTuple(),_material )
     
-    _center = DefinePolygonCenter(_edgeList)
-    
-    # DefuseMaterial(_material,_center)
+    # DefuseMaterial(_material,_polygon._center)
 
         
 def DefinePolygonVertices(_edgeList:list[Edge]):
-    """Return a list of vertices from a list of edges"""
+    """Return Polygon from a list of edges"""
     _verticeList = []
     
     for _edge in _edgeList:
@@ -42,24 +41,16 @@ def DefinePolygonVertices(_edgeList:list[Edge]):
     _verticeList = DeleteIdenticalVertices(_verticeList)
     DeleteTriplons(_verticeList,_edgeList)
     Setvertices(_edgeList,_verticeList)
-
-
-# Local functions
-
-
-def DefinePolygonCenter(_polygon:list[Edge]):
-    """calcul and return the center of the polygon"""
-    xSum,ySum,zSum = 0,0,0
-    for _edge in _polygon:
-        xSum,ySum,zSum = xSum+_edge.x,ySum+_edge.y,zSum+_edge.z
     
-    factor = len(_polygon)
-    return Edge(round(xSum/factor),round(ySum/factor),round(zSum/factor))
+    return Polygon(_edgeList)
         
 
 def FindLength(edge1,edge2):
     """return length between the two Edges"""
     return sqrt((edge1.x-edge2.x)**2+(edge1.y-edge2.y)**2+(edge1.z-edge2.z)**2)
+
+
+# Local functions
         
 
 def DefuseMaterial(_material,_position:Edge):
@@ -147,9 +138,8 @@ def SetEdges(_edge:Edge,_vertices,_edgeList:list[Edge]):
     
     for _vertice in _vertices:
         if _edge in _vertice and _edge._previousEdge not in _vertice:
-            for _tempEdge in _vertice:
-                if _tempEdge != _edge:
-                    _next = GetEdgeByPosition(_tempEdge.GetPositionInTuple(),_edgeList)
+            for _next in _vertice:
+                if _next != _edge:
                     _edge.SetNextEdge(_next)
                     _next.SetPreviousEdge(_edge)
                     return _next

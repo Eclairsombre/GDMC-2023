@@ -11,4 +11,4 @@ class Building:
 
     def build(self):
         _foundations = Foundation(self.area)
-        self.area = _foundations._edgeList
+        self.area = _foundations._polygon._edgeList

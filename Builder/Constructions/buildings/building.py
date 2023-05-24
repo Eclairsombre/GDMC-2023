@@ -1,6 +1,6 @@
 """Building class"""
 
-from Generator.Constructions.buildings.foundations import Foundation
+from Builder.Constructions.buildings.foundations import Foundation
 
 class Building:
     area = () # contain every edges of the buildings. edges must be implemented in order

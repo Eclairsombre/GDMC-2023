@@ -21,7 +21,7 @@ def TupleListToEdgeList(_tupleList:list[tuple[int]]):
 
 
 def FillPolygon(_polygon:Polygon,editor=e,_material:Block=Block("minecraft:stone")):
-    """Permit to fill a polygon delimited by vertices with a defusion algorithme"""
+    """Permit to fill a polygon delimited by vertices with a defusion algorithm"""
     for _edge in _polygon._edgeList:
         placeLine(editor,_edge.GetPositionInTuple(),_edge._nextEdge.GetPositionInTuple(),_material )
     

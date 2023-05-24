@@ -3,7 +3,7 @@
 from __future__ import annotations
 from Geometry.Edge import Edge
 from utils.DevTools import FillPolygon,DefinePolygonVertices,FindLength
-from Generator.Config import *
+from Builder.Config import *
 
 class Foundation():
     _polygon = []

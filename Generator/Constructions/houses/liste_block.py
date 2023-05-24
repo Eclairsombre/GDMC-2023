@@ -1,4 +1,4 @@
-from gdpc import Editor, Block, geometry
+from gdpc import Block
 
 
 air = Block('air')
@@ -35,4 +35,7 @@ black_stained_glass = Block("black_stained_glass")
 white_concrete_powder = Block("white_concrete_powder")
 white_concrete = Block("white_concrete")
 
+grass_block = Block("grass_block")
+podzol = Block("podzol")
 
+block_quartz=Block("quartz_block")

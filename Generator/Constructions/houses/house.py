@@ -34,19 +34,27 @@ def mur_sol(co1,co2,block):
                 editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
                 
     
-                
+def poserEscalier(co1,co2,type):
+    editor = Editor(buffering=  True) 
+    if co1[0]==co2[0]:
+        for i in range((abs(co2[2])-abs(co1[2]))):
+            editor.placeBlock((co1[0],co1[1],co1[2]+i),type)
+    if co1[2]==co2[2]:
+        for i in range((abs(co2[0])-abs(co1[0]))):
+            editor.placeBlock((co1[0]+i,co1[1],co1[2]),type)
+     
                 
 def poserPorte(co,type):
     editor = Editor(buffering=  True) 
     editor.placeBlock((co[0],co[1],co[2]),type)
     
 
-def house(co1,co2,cotegarage):# ,style,etage,direction):
+def house(co1,co2,cotegarage,hauteurMax):# ,style,etage,direction):
     """
     Minimun 10*10 
     """
     tailleX=abs(co2[0])-abs(co1[0])
-    hauteurMax=max(co2[1],co1[1])
+    
     hauteurMin=min(co2[1],co1[1])
     tailleZ=abs(co2[2])-abs(co1[2])
     midtailleX=tailleX//2
@@ -123,11 +131,23 @@ def house(co1,co2,cotegarage):# ,style,etage,direction):
             
             poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-1),door_east)
             poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-2),door_east)
+        else:
+            poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-1),door_east)
             
+            
+            
+    #toit
+    mur_sol((x1,y1+5,z1),(x2,y1+5,midtailleZ),oak_planks)
+    mur_sol((midtailleX,y1+5,midtailleZ),(x2,y1+5,z2),oak_planks)
+    mur_sol((x1,y1+6,z1+1),(x2-1,y1+6,midtailleZ-1),oak_planks)
+    mur_sol((midtailleX+1,y1+6,midtailleZ-1),(x2-1,y1+6,z2),oak_planks)
+    
+    poserEscalier((x1,y1+5,z1-1),(x2+1,y1+5,z1-1),stairs_gauche)
+    poserEscalier((x2,y1+5,z1),(x2,y1+5,z2),stairs_derriere)
     
 if __name__=="__main__":
     
-    house((0,-60,0),(15,-60,15),"left")
+    house((0,-60,0),(15,-60,14),"left",10)
     
     #delete((0,-60,0),(15,-50,15))
     

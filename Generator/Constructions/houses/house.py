@@ -1,47 +1,142 @@
 from gdpc import *
 from liste_block import *
 import math
+import time
 
 
 
+def delete(co1,co2):
+    editor = Editor(buffering=  True) 
+    for i in range(abs(abs(co2[1])-abs(co1[1]))):
+            for j in range((abs(co2[2])-abs(co1[2]))):
+                for a in range((abs(co2[0])-abs(co1[0]))):
+                    editor.placeBlock((co1[0]+a,co1[1]+i,co1[2]+j),air)
 
+
+def mur_sol(co1,co2,block):
+    editor = Editor(buffering=  True) 
+    
+    if co1[1]==co2[1]:
+         for i in range(abs(abs(co2[0])-abs(co1[0]))):
+            for j in range((abs(co2[2])-abs(co1[2]))):
+                editor.placeBlock((co1[0]+i,co1[1],co1[2]+j),block)
+    elif co2[0]==co1[0]:
+       
+        for i in range(abs(abs(co2[1])-abs(co1[1]))):
+            for j in range((abs(co2[2])-abs(co1[2]))):
+               
+                editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
+                
+    elif co2[2]==co1[2]:
+        for i in range(abs(abs(co2[1])-abs(co1[1]))):
+            for j in range((abs(co2[0])-abs(co1[0]))):
+            
+                editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
+                
+    
+                
+                
+def poserPorte(co,type):
+    editor = Editor(buffering=  True) 
+    editor.placeBlock((co[0],co[1],co[2]),type)
+    
 
 def house(co1,co2,cotegarage):# ,style,etage,direction):
+    """
+    Minimun 10*10 
+    """
     tailleX=abs(co2[0])-abs(co1[0])
     hauteurMax=max(co2[1],co1[1])
     hauteurMin=min(co2[1],co1[1])
     tailleZ=abs(co2[2])-abs(co1[2])
     midtailleX=tailleX//2
     midtailleZ=tailleZ//2
-    editor = Editor(buffering=  True)
-   
+    editor = Editor(buffering=  True) 
+    
+    x1=co1[0]
+    y1=co1[1]
+    z1=co1[2]
+    x2=co2[0]
+    y2=co2[1]
+    z2=co2[2]
+    
+    
+    
+            
     for i in range(tailleX):
         for j in range(tailleZ):
             if cotegarage=='right':
                if i<midtailleX and j<midtailleZ:
                    editor.placeBlock((i,hauteurMin,j),grass_block)
-                   if j==2 :
-                       editor.placeBlock((i,hauteurMin,j),block_quartz)
+                   print(midtailleZ//2)
+                   if midtailleZ%2==0:
+                        if j==midtailleZ//2 or j==(midtailleZ//2)-1 :
+                            editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
+                            
+                            
+                   else:
+                       if j==midtailleZ//2 :
+                            editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
+                           
+                   
+                            
                        
                else:
-                   editor.placeBlock((i,hauteurMin,j),oak_planks)
+                   editor.placeBlock((x1+i,hauteurMin,z1+j),oak_planks)
             elif cotegarage=='left':
-                if i<midtailleX and j>=midtailleZ:
-                   editor.placeBlock((i,hauteurMin,j),grass_block)
-                   if j==7 :
-                       editor.placeBlock((i,hauteurMin,j),block_quartz)
-                       
-                else:
-                   editor.placeBlock((i,hauteurMin,j),oak_planks)
                 
+                if i<midtailleX and j>=midtailleZ:
+                   editor.placeBlock((x1+i,hauteurMin,z1+j),grass_block)
+                   if (tailleZ-midtailleZ)%2==0:
+                        if j==tailleZ-(midtailleZ//2)-2 or j==tailleZ-(midtailleZ//2)-1 :
+                            editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
+                        
+                            
+                   else:
+                       if j==tailleZ-(midtailleZ//2) -1:
+                            editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
+                    
+                   
+                            
+                        
+                       
+                
+                   
             
+
     
-        
+    #murs
+    mur_sol((x1,y1+1,z1),(x2,y1+5,z1),block_quartz)
+    mur_sol((x1,y1+1,z1),(x1,y1+5,midtailleZ   ),block_quartz)
+    mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),block_quartz)
+    mur_sol((x1,y1+1,midtailleZ-1),(midtailleX+1,y1+5,midtailleZ-1),block_quartz)
+    mur_sol((midtailleX,y1+1,midtailleX),(midtailleX,y1+5,z2),block_quartz)
+    mur_sol((midtailleX,y1+1,z2-1),(x2,y1+5,z2-1),block_quartz)
+    
+    
+    #sols/plafonds
+    mur_sol((x1,y1+4,z1),(x2,y1+4,midtailleZ),block_quartz)
+    mur_sol((x1,y1,z1),(x2,y1,midtailleZ),oak_planks)
+    mur_sol((midtailleX,y1+4,midtailleZ),(x2,y1+4,z2),block_quartz)
+    mur_sol((midtailleX,y1,midtailleZ),(x2,y1,z2),oak_planks)
+    
+    
+    
+    
+    if cotegarage=='left':
+        if (tailleZ-midtailleZ)%2==0:
+            time.sleep(1)
+            poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-1),door_east)
+            poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-2),door_east)
+            
     
 if __name__=="__main__":
     
-    house((0,-60,0),(10,-60,10),"right")
+    house((0,-60,0),(15,-60,15),"left")
     
+    #delete((0,-60,0),(15,-50,15))
+    
+
     
     
     

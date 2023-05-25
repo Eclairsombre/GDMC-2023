@@ -12,8 +12,8 @@ stairs_gauche = Block("oak_stairs", {"facing": "south"})
 
 stairs_quartz_devant = Block("quartz_stairs", {"facing": "east"})
 stairs_quartz_derriere = Block("quartz_stairs", {"facing": "west"})
-stairs_quartz_droite = Block("quartz_stairs", {"facing": "north"})
-stairs_quartz_gauche = Block("quartz_stairs", {"facing": "south"})
+stairs_quartz_droite = Block("quartz_stairs", {"facing": "north","half":"top"})
+stairs_quartz_gauche = Block("quartz_stairs", {"facing": "south", "half":"top"})
 
 
 

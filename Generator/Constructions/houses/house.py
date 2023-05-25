@@ -97,6 +97,7 @@ def poserFenetre(co1,co2,type):
                 
             
     if co1[2]==co2[2]:
+        editor = Editor(buffering=  True) 
         if x%2==0:
             for i in range(x//2):
                 if i%2==0:
@@ -106,7 +107,38 @@ def poserFenetre(co1,co2,type):
             for i in range(x):
                 if i%2==0:
                     editor.placeBlock((co1[0]+i,co1[1]+1,co1[2]),type)
+                    
+                    
+                    
+                    
+                    
+
+def poserGarage(co1,co2):
+    editor = Editor(buffering=  True) 
+    mur_sol(co1,co2,block_quartz)
+    x=abs((co2[0])-(co1[0]))
+    z=abs((co2[2])-(co1[2]))
     
+    if co1[0]==co2[0]:
+        if z%2==0:
+            for i in range(z):
+                if i%2==0:
+                    editor.placeBlock((co1[0],co2[1],co1[2]+i),stairs_quartz_droite)
+                else:
+                    editor.placeBlock((co1[0],co2[1],co1[2]+i),stairs_quartz_gauche)
+        else:
+            for i in range((z//2)):
+                
+                    print(i)
+                    editor.placeBlock((co1[0],co2[1],co1[2]+i*3),stairs_quartz_droite)
+                    editor.placeBlock((co1[0],co2[1],co1[2]+i*3+1),stairs_quartz_gauche)
+                
+                    editor.placeBlock((co1[0],co2[1],co1[2]+i*3+2),block_quartz)
+            
+
+                    
+                
+            
 
 def house(co1,co2,cotegarage,hauteurMax):# ,style,etage,direction):
     """
@@ -199,7 +231,8 @@ def house(co1,co2,cotegarage,hauteurMax):# ,style,etage,direction):
             
     poserToit(co1,co2,hauteurMax)    
     
-   
+    poserGarage((x1+1,y1+1,z1+1),(x1+1,y1+3,midtailleZ-1))
+    mur_sol((x1,y1+1,z1+1),(x1,y1+4,midtailleZ-1),air)
    
     
     

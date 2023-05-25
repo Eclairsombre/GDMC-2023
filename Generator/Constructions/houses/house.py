@@ -67,8 +67,8 @@ def house(co1,co2,cotegarage):# ,style,etage,direction):
         for j in range(tailleZ):
             if cotegarage=='right':
                if i<midtailleX and j<midtailleZ:
-                   editor.placeBlock((i,hauteurMin,j),grass_block)
-                   print(midtailleZ//2)
+
+                
                    if midtailleZ%2==0:
                         if j==midtailleZ//2 or j==(midtailleZ//2)-1 :
                             editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
@@ -80,13 +80,11 @@ def house(co1,co2,cotegarage):# ,style,etage,direction):
                            
                    
                             
-                       
-               else:
-                   editor.placeBlock((x1+i,hauteurMin,z1+j),oak_planks)
+               
             elif cotegarage=='left':
                 
                 if i<midtailleX and j>=midtailleZ:
-                   editor.placeBlock((x1+i,hauteurMin,z1+j),grass_block)
+                   
                    if (tailleZ-midtailleZ)%2==0:
                         if j==tailleZ-(midtailleZ//2)-2 or j==tailleZ-(midtailleZ//2)-1 :
                             editor.placeBlock((x1+i,hauteurMin,z1+j),block_quartz)
@@ -98,12 +96,7 @@ def house(co1,co2,cotegarage):# ,style,etage,direction):
                     
                    
                             
-                        
-                       
-                
-                   
-            
-
+    
     
     #murs
     mur_sol((x1,y1+1,z1),(x2,y1+5,z1),block_quartz)
@@ -119,13 +112,15 @@ def house(co1,co2,cotegarage):# ,style,etage,direction):
     mur_sol((x1,y1,z1),(x2,y1,midtailleZ),oak_planks)
     mur_sol((midtailleX,y1+4,midtailleZ),(x2,y1+4,z2),block_quartz)
     mur_sol((midtailleX,y1,midtailleZ),(x2,y1,z2),oak_planks)
+    mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),grass_block)
+    
     
     
     
     
     if cotegarage=='left':
         if (tailleZ-midtailleZ)%2==0:
-            time.sleep(1)
+            
             poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-1),door_east)
             poserPorte((midtailleX,hauteurMin+1,z2-((midtailleZ)//2)-2),door_east)
             

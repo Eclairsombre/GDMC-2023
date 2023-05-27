@@ -8,6 +8,10 @@ stairs_derriere = Block("oak_stairs", {"facing": "west"})
 stairs_droite = Block("oak_stairs", {"facing": "north"})
 stairs_gauche = Block("oak_stairs", {"facing": "south"})
 
+stairs_devant_retourner = Block("oak_stairs", {"facing": "east","half":"top"})
+stairs_derriere_retourner = Block("oak_stairs", {"facing": "west","half":"top"})
+stairs_droite_retourner = Block("oak_stairs", {"facing": "north","half":"top"})
+stairs_gauche_retourner = Block("oak_stairs", {"facing": "south","half":"top"})
 
 
 stairs_quartz_devant = Block("quartz_stairs", {"facing": "east"})
@@ -39,3 +43,12 @@ grass_block = Block("grass_block")
 podzol = Block("podzol")
 
 block_quartz=Block("quartz_block")
+
+
+block_white_concrete=Block("white_concrete")
+
+
+oak_slab=Block('oak_slab')
+quartz_slab_up=Block('quartz_slab',{"type":"top"})
+
+oak_fence= Block('oak_fence')

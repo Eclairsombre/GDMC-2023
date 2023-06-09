@@ -35,6 +35,7 @@ class World:
                 self.volume[block.coordinates[0] - self.coordinates_min[0]][block.coordinates[1] - self.coordinates_min[1]][block.coordinates[2] - self.coordinates_min[2]] = block
 
     def getBlockFromCoordinates(self, coordinates):
+            editor = Editor(buffering=True)
             if self.volume[coordinates[0] - self.coordinates_min[0]][coordinates[1] - self.coordinates_min[1]][coordinates[2] - self.coordinates_min[2]] == None:
                 self.volume[coordinates[0] - self.coordinates_min[0]][coordinates[1] - self.coordinates_min[1]][coordinates[2] - self.coordinates_min[2]] = Block((coordinates[0], coordinates[1], coordinates[2]), editor.getBlock((coordinates[0], coordinates[1], coordinates[2])).id)
             
@@ -84,20 +85,32 @@ class World:
                     scanned.append(neighbor)
                     self.getNeighbors(neighbor)
                     if neighbor.isSurface():
-                        print(i)
-                        i += 1
                         editor.placeBlock(neighbor.coordinates, place("minecraft:glass"))
                         print(neighbor.coordinates)
                         self.propagate(neighbor.coordinates, scanned)
+    
+    def binaryImage(self):
+        binaryImage = []
+        for x in range(self.length_x):
+            binaryImage.append([])
+            for y in range(self.length_y):
+                binaryImage[x].append([])
+                for z in range(self.length_z):
+                    if (self.volume[x][y][z] != None):
+                        binaryImage[x][y].append(True)
+                    else:
+                        binaryImage[x][y].append(False)
+
+        return np.array(binaryImage)
+
                         
 
-w = World()
-#print(len(w.volume))
-#w.setVolume()
-#print(w.volume[0][0][0].name)
-#print("done")
-editor = Editor(buffering=False)
-import sys
-sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
-w.propagate((2182, 75, 1060))
-print("fine")
+# w = World()
+# editor = Editor(buffering=False)
+
+# import sys
+# sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
+
+# w.propagate((2047, 70, 612))
+# print("done")
+# print(w.binaryImage())

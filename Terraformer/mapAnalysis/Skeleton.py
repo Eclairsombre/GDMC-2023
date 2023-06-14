@@ -4,6 +4,8 @@ from skimage.morphology import skeletonize
 from skan.csr import skeleton_to_csgraph
 from collections import Counter
 
+from gdpc import Block as place
+
 data = np.array([[[False, False, False, False, False, False, False, False, False, False, False, False, False], [False, False, False, False, False, False, False, False, False, False, False, False, False], [False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True]], [[False, False, False, False, False, False, False, False, False, False, False, False, False], [False, False, False, False, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True]], [[False, False, False, False, False, True, True, True, True, True, True, True, False], [False, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True]], [[False, False, False, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, False, False, False]], [[False, False, False, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, False, False, False, False], [True, True, True, True, True, False, False, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, False, False, False, False, False, False, False], [True, True, True, True, False, False, False, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, False, False, True, True, True], [True, True, True, True, True, False, False, False, False, False, False, False, False], [True, True, True, False, False, False, False, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, False, False, False, False, False], [True, True, True, True, True, False, False, False, False, False, False, False, False], [False, False, False, False, False, False, False, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, False, False, False, False, False], [True, True, True, True, True, False, False, False, False, False, False, False, False], [False, False, False, False, False, False, False, False, False, False, False, False, False]], [[False, False, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, True, True, True], [True, True, True, True, True, True, True, True, True, True, False, False, False], [True, True, True, True, True, True, True, True, False, False, False, False, False], [True, True, True, True, True, False, False, False, False, False, False, False, False], [False, False, False, False, False, False, False, False, False, False, False, False, False]]])
 
 class Skeleton:
@@ -23,10 +25,23 @@ class Skeleton:
 
         # List of lists. Inverted coordinates.
         coordinates = list(coordinates)
+        print(coordinates)
         for i in range(len(coordinates)):
-            coordinates[i] = (coordinates[i][1], coordinates[i][0])
+            coordinates[i] = list(coordinates[i])
 
-        self.coordinates = coordinates
+        print(coordinates)
+        coordinates_final = []
+        print(len(coordinates[0]))
+        print((coordinates[0]))
+        print(len(coordinates[1]))
+        print((coordinates[1]))
+        print(len(coordinates[2]))
+        print((coordinates[2]))
+        for i in range(len(coordinates[0])):
+            print((coordinates[2][i], coordinates[1][i], coordinates[0][i]))
+            coordinates_final.append((coordinates[2][i], coordinates[1][i], coordinates[0][i]))
+
+        self.coordinates = coordinates_final
 
     def findNextElements(self, key):
         """Find the very nearest elements"""
@@ -142,25 +157,25 @@ w = World.World()
 import sys
 sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
 
-# w.propagate((2039, 72, 580))
-# print("done")
-# print(w.binaryImage())
+w.propagate((1729, 102, 575))
+print("done")
+print(w.binaryImage())
 
-# # # # # # #
+# # # # # #
 
-# # print(blobs)
-# # print("-----------------------------------------")
-# # print(data, "date")
+# print(blobs)
+# print("-----------------------------------------")
+# print(data, "date")
 
-# skel = Skeleton()
+skel = Skeleton()
 
-# skel.setSkeleton(w.binaryImage())
+skel.setSkeleton(w.binaryImage())
 
-# skel.parseGraph()
-# print(skel.centers)
-# print(skel.lines)
-# print(skel.intersections)
-# print(skel.coordinates)
+skel.parseGraph()
+print(skel.centers)
+print(skel.lines)
+print(skel.intersections)
+print(skel.coordinates)
 
 
 ### Visualisation ###
@@ -168,6 +183,7 @@ sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
 
 from PIL import Image
 from gdpc import Editor
+import random
 
 def heightmap(
     mapName="heightmap.png",
@@ -223,4 +239,63 @@ def heightmap(
     heightmap.save(mapName)
     #heightmapBiome.save(biomeName)
 
+def skeletonVisualisation(skeleton):
+    editor = Editor()
+
+    buildArea = editor.getBuildArea()
+    buildRect = buildArea.toRect()
+    xzStart = buildRect.begin
+    xzDistance = (max(buildRect.end[0], buildRect.begin[0]) - min(buildRect.end[0], buildRect.begin[0]), max(buildRect.end[1], buildRect.begin[1]) - min(buildRect.end[1], buildRect.begin[1]))
+    
+    path = "heightmap.png"
+    # Lines
+    im = Image.open("heightmap.png")
+    print(im.size)
+    width, height = im.size
+    # img = Image.new(mode="RGB", size=(width, height))
+
+    for i in range(len(skeleton.lines)):
+        r, g, b = (
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255),
+        )
+        for j in range(len(skeleton.lines[i])):
+            print(skeleton.lines[i])
+            x = skeleton.coordinates[skeleton.lines[i][j]][0]+1689
+            y = skeleton.coordinates[skeleton.lines[i][j]][1]+68
+            z = skeleton.coordinates[skeleton.lines[i][j]][2]+570
+            editor.placeBlock((x, y, z), place("minecraft:white_concrete"))
+            im.putpixel(
+                (
+                    int(skeleton.coordinates[skeleton.lines[i][j]][2])-1,
+                    int(skeleton.coordinates[skeleton.lines[i][j]][0])-1,
+                ),
+                (r + j, g + j, b + j),
+            )
+    im.save(path, "PNG")
+
+    # Centers
+    for i in range(len(skeleton.centers)):
+        print(skeleton.coordinates[skeleton.centers[i]])
+        im.putpixel(
+            (int(skeleton.coordinates[skeleton.centers[i]][0]), int(skeleton.coordinates[skeleton.centers[i]][1])),
+            (255, 255, 0),
+        )
+    im.save(path, "PNG")
+
+    # Intersections
+    for i in range(len(skeleton.intersections)):
+        intersection = []
+        for j in range(len(skeleton.intersections[i])):
+            intersection.append(skeleton.coordinates[skeleton.intersections[i][j]])
+
+        for i in range(len(intersection)):
+            im.putpixel(
+                (int(skeleton.intersections[i][0]), int(skeleton.intersections[i][1])),
+                (255, 0, 255),
+            )
+    im.save(path, "PNG")
+
 heightmap()
+skeletonVisualisation(skel)

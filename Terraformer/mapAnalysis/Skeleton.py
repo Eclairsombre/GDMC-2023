@@ -126,6 +126,9 @@ class Skeleton:
                                 print(line, "hey 1")
 
 
+### Execution ###
+
+
 from skimage.data import binary_blobs
 blobs = binary_blobs(16, volume_fraction=0.3, n_dim=3)
 
@@ -139,21 +142,85 @@ w = World.World()
 import sys
 sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
 
-w.propagate((2158, 125, 560))
-print("done")
-print(w.binaryImage())
+# w.propagate((2039, 72, 580))
+# print("done")
+# print(w.binaryImage())
 
-# # # # # #
+# # # # # # #
 
-# print(blobs)
-# print("-----------------------------------------")
-# print(data, "date")
+# # print(blobs)
+# # print("-----------------------------------------")
+# # print(data, "date")
 
-skel = Skeleton()
+# skel = Skeleton()
 
-skel.setSkeleton(w.binaryImage())
+# skel.setSkeleton(w.binaryImage())
 
-skel.parseGraph()
-print(skel.centers)
-print(skel.lines)
-print(skel.intersections)
+# skel.parseGraph()
+# print(skel.centers)
+# print(skel.lines)
+# print(skel.intersections)
+# print(skel.coordinates)
+
+
+### Visualisation ###
+
+
+from PIL import Image
+from gdpc import Editor
+
+def heightmap(
+    mapName="heightmap.png",
+    biomeName="heightmap_biome.png",
+):
+    """
+    Generate a heightmap using nbt data.
+
+    Args:
+        xzStart (tuple): xz coordinates of the northwest corner of the
+        area to scan.
+        xzDistance (tuple): xz distance of the southwest corner from the
+        northwest corner.
+
+    Returns:
+        heightmap.png
+
+    >>> heightmap((-256, -256), (512, 512))
+    """
+
+    editor = Editor()
+
+    buildArea = editor.getBuildArea()
+    buildRect = buildArea.toRect()
+    xzStart = buildRect.begin
+    xzDistance = (max(buildRect.end[0], buildRect.begin[0]) - min(buildRect.end[0], buildRect.begin[0]), max(buildRect.end[1], buildRect.begin[1]) - min(buildRect.end[1], buildRect.begin[1]))
+
+    heightmap = Image.new(
+        "RGBA",
+        (xzDistance[0], xzDistance[1]),
+        "red",
+    )
+
+    # heightmapBiome = Image.new(
+    #     "RGBA",
+    #     (xzDistance[0], xzDistance[1]),
+    #     "red",
+    # )
+
+    slice = editor.loadWorldSlice(buildRect)
+    heightmapData = list(
+        np.array(slice.heightmaps["MOTION_BLOCKING_NO_LEAVES"], dtype=np.uint8)
+    )
+
+    for x in range(0, xzDistance[0]):
+        for z in range(0, xzDistance[1]):
+            y = heightmapData[x][z]
+            biomeId = slice.getBiome((xzStart[0] + x, 0, xzStart[1] + z))
+            block = slice.getBlock((xzStart[0] + x, y, xzStart[1] + z))
+            #heightmapBiome.putpixel((x, z), heightmapColor(y, biomeId, block))
+            heightmap.putpixel((x, z), (y, y, y))
+
+    heightmap.save(mapName)
+    #heightmapBiome.save(biomeName)
+
+heightmap()

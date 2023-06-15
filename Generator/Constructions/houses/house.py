@@ -1,6 +1,6 @@
 from gdpc import *
 from liste_block import *
-
+from random import randint
 
 
 def delete(co1,co2):
@@ -29,7 +29,7 @@ def mur_sol(co1,co2,block):
                 editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
                 
     elif co2[2]==co1[2]:
-        print((abs(co2[0])-abs(co1[0])))
+        
         for i in range(abs(abs(co2[1])-abs(co1[1]))):
             for j in range((abs(co2[0])-abs(co1[0]))):
             
@@ -1218,7 +1218,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
     
     editor = Editor(buffering=  True) 
     
-    print(tailleZ)
+    
     
     x1=co1[0]
     y1=co1[1]
@@ -1264,7 +1264,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
             poserFenetre((x1+2,y1+1,z2-1),(x2-1,y1+4,z2-1),glass)
             
             if  ((z2-z1)//2)%2==0:
-                    print(z1+(tailleZ//4))
+                 
                     poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)),door)
                     poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)-1),door)
                     mur_sol((x1,y1,z1+(tailleZ//4)-1),(x1+tailleX//2,y1,z1+(tailleZ//4)+1),chemin)
@@ -1349,7 +1349,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                     for i in range(tailleX):
                         for j in range(tailleZ):
                             if (x1+i< x1+(tailleX//2) and z2-j>=z2-tailleZ//2 ) and (x1+i==x1 or z2-j==z2) and z2-j != z2-(tailleZ//4):
-                                print(1)
+                              
                                 editor.placeBlock((x1+i,y1+1,z2-1-j),fence)
                             
                     
@@ -1360,7 +1360,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
             
             
         
-        print('Done')
+      
     
     
     
@@ -1384,7 +1384,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
             
             
             mur_sol((x2-1,y1+1,z1+1),(x2-1,y1+4,midtailleZ-1),air)
-            #print((x2-2,y1+1,midtailleZ+1),(x2-2,y1+3,z2-1))
+           
             
             #sols/plafonds
             mur_sol((x1,y1+4,z1),(x2,y1+4,midtailleZ),mur)
@@ -1420,7 +1420,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                     for i in range(tailleX):
                         for j in range(tailleZ):
                             if (midtailleX+1+i< x2 and z1+j>=midtailleZ ) and (midtailleX+i+1==x2-1 or z1+j==z2-1)   and z1+j != z2-1-(tailleZ//4):
-                                print(1)
+                          
                                 editor.placeBlock((midtailleX+i+1,y1+1,z1+j),fence)
                             
                     
@@ -1454,7 +1454,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
             
             
             mur_sol((x2-1,y1+1,midtailleZ+1),(x2-1,y1+4,z2-1),air)
-            #print((x2-2,y1+1,midtailleZ+1),(x2-2,y1+3,z2-1))
+         
             
             #sols/plafonds
             mur_sol((x1,y1+4,midtailleZ),(x2,y1+4,z2),mur)
@@ -1490,7 +1490,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                     for i in range(tailleX):
                         for j in range(tailleZ):
                             if (midtailleX+1+i< x2 and z1+j<midtailleZ ) and (midtailleX+i+1==x2-1 or z1+j==z1)   and z2-j != z2-(tailleZ//4):
-                                print(1)
+                            
                                 editor.placeBlock((midtailleX+i+1,y1+1,z1+j),fence)
                             
                     
@@ -1556,7 +1556,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                         for i in range(tailleX):
                             for j in range(tailleZ):
                                 if (x1+i>= midtailleX and z1+j<midtailleZ ) and (x1+i==x2-1 or z1+j==z1)   and x1+i != x2-1-tailleX//4:
-                                    print(1)
+                                  
                                     editor.placeBlock((x1+i,y1+1,z1+j),fence)
                                 
                         
@@ -1626,7 +1626,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                         for i in range(tailleX):
                             for j in range(tailleZ):
                                 if (x1+i< midtailleX and z1+j<midtailleZ ) and (x1+i==x1 or z1+j==z1)   and x1+i != x1+tailleX//4:
-                                    print(1)
+                                   
                                     editor.placeBlock((x1+i,y1+1,z1+j),fence)
                                 
                         
@@ -1691,7 +1691,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                         for i in range(tailleX):
                             for j in range(tailleZ):
                                 if (x1+i< midtailleX and z1+j>=midtailleZ )and (x1+i==x1 or z1+j==z2-1)  and x1+i != x1+tailleX//4:
-                                    print(1)
+                                   
                                     editor.placeBlock((x1+i,y1+1,z1+j),fence)
                                 
                         
@@ -1751,7 +1751,7 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
                         for i in range(tailleX):
                             for j in range(tailleZ):
                                 if (x1+i>= midtailleX and z1+j>=midtailleZ )and (x1+i==x2-1 or z1+j==z2-1)  and x1+i != x2-1-tailleX//4:
-                                    print(1)
+                                   
                                     editor.placeBlock((x1+i,y1+1,z1+j),fence)
                                 
                         
@@ -1767,11 +1767,11 @@ if __name__=="__main__":
    
         
         
-    
+    nb_style=randint(0,3)
     
     delete((-10,-60,-10),(50,-40,50)) 
     
-    house((0,-60,10),(10,-60,20),"right",10,1,'south')
+    house((0,-60,10),(10,-60,20),"right",10,nb_style,'east')
     
 
    

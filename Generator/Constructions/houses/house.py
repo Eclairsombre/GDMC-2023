@@ -29,6 +29,7 @@ def mur_sol(co1,co2,block):
                 editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
                 
     elif co2[2]==co1[2]:
+        print((abs(co2[0])-abs(co1[0])))
         for i in range(abs(abs(co2[1])-abs(co1[1]))):
             for j in range((abs(co2[0])-abs(co1[0]))):
             
@@ -51,7 +52,7 @@ def poserPorte(co,type):
     
     
     
-def poserToit(co1,co2,hauteurMax,cotegarage):
+def poserToit(co1,co2,hauteurMax,cotegarage,style,direction):
     x1=co1[0]
     y1=co1[1]
     z1=co1[2]
@@ -59,225 +60,981 @@ def poserToit(co1,co2,hauteurMax,cotegarage):
     y2=co2[1]
     z2=co2[2]
     
+    toit_esca_devant=Block(style['toit_esca'],{"facing": "east"})
+    toit_esca_derriere=Block(style['toit_esca'],{"facing": "west"})
+    toit_esca_droite=Block(style['toit_esca'],{"facing": "north"})
+    toit_esca_gauche=Block(style['toit_esca'],{"facing": "south"})
+    toit_esca_devant_ret=Block(style['toit_esca'],{"facing": "east","half":"top"})
+    toit_esca_derriere_ret=Block(style['toit_esca'],{"facing": "west","half":"top"})
+    toit_esca_droite_ret=Block(style['toit_esca'],{"facing": "north","half":"top"})
+    toit_esca_gauch_rete=Block(style['toit_esca'],{"facing": "south","half":"top"})
+    toit_planche=Block(style['toit_planche'])
+    toit_slab=Block(style['toit_slab'])
+    mur=Block(style['mur'])
+    
     tailleX=abs(co2[0])-abs(co1[0])
     editor = Editor(buffering=  True) 
     tailleZ=abs(co2[2])-abs(co1[2])
     midtailleX=(tailleX//2)+x1
     midtailleZ=(tailleZ//2)+z1
-    if cotegarage=='left':
-        if x1==0 and z1==0:
-            for i in range(3):
-                if i==2:
-                    mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),oak_planks)
-                    mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),oak_slab)
-                    mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),oak_slab)
-                    
-                else:
-                    mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),block_white_concrete)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),block_white_concrete)
-                    
-                poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+2+i,y1+4+i,midtailleZ-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((x1-1,y1+4+i,z1+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),stairs_gauche_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z2),stairs_devant_retourner)
-                editor.placeBlock((midtailleX+i,y1+4+i,z2),stairs_derriere_retourner)
-        elif x1==0:
-            for i in range(3):
-                if i==2:
-                    mur_sol((x1-1,y1+4+i,z1+i),(x2+2-i,y1+4+i,midtailleZ-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),oak_planks)
-                    mur_sol((x1-1,y1+5+i,z1+i),(x2+2-i,y1+5+i,midtailleZ-i),oak_slab)
-                    mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),oak_slab)
-                    
-                else:
-                    mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),block_white_concrete)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),block_white_concrete)
-                    
-                poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+2+i,y1+4+i,midtailleZ-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((x1-1,y1+4+i,z1+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),stairs_gauche_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z2),stairs_devant_retourner)
-                editor.placeBlock((midtailleX+i,y1+4+i,z2),stairs_derriere_retourner)
-                
-        elif  z1==0:
-            for i in range(3):
-                if i==2:
-                    mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),oak_planks)
-                    mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),oak_slab)
-                    mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),oak_slab)
-                    
-                else:
-                    mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),block_white_concrete)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),block_white_concrete)
-                    
-                poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+i,y1+4+i,midtailleZ-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((x1-1,y1+4+i,z1+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),stairs_gauche_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z2),stairs_devant_retourner)
-                editor.placeBlock((midtailleX+i,y1+4+i,z2),stairs_derriere_retourner)
-            
-        
-        
-        
-        else:
-            for i in range(3):
-                if i==2:
-                    mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),oak_planks)
-                    mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),oak_slab)
-                    mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),oak_slab)
-                    
-                else:
-                    mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),block_white_concrete)
-                    mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),block_white_concrete)
-                    
-                    
-                poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+i,y1+4+i,midtailleZ-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((x1-1,y1+4+i,z1+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),stairs_gauche_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z2),stairs_devant_retourner)
-                editor.placeBlock((midtailleX+i,y1+4+i,z2),stairs_derriere_retourner)
-            
-   
-    elif cotegarage=='right':
-        if x1==0 and z1==0:
-           
-            for i in range(3):
-                if i==2:
-                    
-                    
-                    mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),oak_slab)
-                    mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),oak_slab)
-                    
-                else:
-                    mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                    mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                
-                poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+2+i,y1+4+i,midtailleZ-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+3-i),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+2,y1+4-i,z2-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+1+i),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),stairs_derriere_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z1-1),stairs_devant_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,z2-1-i),stairs_gauche_retourner)
-                pass
-        elif x1==0:
-            for i in range(3):
-                if i==2:
-                
-                    
-                    mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2+1-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),oak_slab)
-                    mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2+1-i,y1+5+i,z2-i),oak_slab)
-                    
-                else:
-                    mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                    mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                
-                poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+2+i,y1+4+i,midtailleZ-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+1-i),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+2,y1+4-i,z2-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+i),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),stairs_derriere_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z1-1),stairs_devant_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,z2-1-i),stairs_gauche_retourner)
-                pass
-            
-        elif z1==0:
-            
-            for i in range(3):
-                if i==2:
-                
-                    
-                    mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i+1),oak_slab)
-                    mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),oak_slab)
-                    
-                else:
-                    mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                    mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                
-                poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+i,y1+4+i,midtailleZ-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+2-i),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+1,y1+4-i,z2-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+1+i),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),stairs_derriere_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z1-1),stairs_devant_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,z2-1-i),stairs_gauche_retourner)
-                
-        else:
-            
-            for i in range(3):
-                if i==2:
-                
-                    
-                    mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),oak_planks)
-                    mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),oak_slab)
-                    mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),oak_slab)
-                    
-                else:
-                    mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                    mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),block_white_concrete)
-                    
-                    
-                poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+i,y1+4+i,midtailleZ-1+i),stairs_gauche)
-                poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),stairs_derriere)
-                poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+1,y1+4-i,z2-i),stairs_droite)
-                poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+i),stairs_devant)
-                if hauteurMax==5+i:
-                    break
-            for i in range(2):
-                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),stairs_derriere_retourner)
-                editor.placeBlock((x2-1-i,y1+4+i,z1-1),stairs_devant_retourner)
-                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),stairs_droite_retourner)
-                editor.placeBlock((x1-1,y1+4+i,z2-1-i),stairs_gauche_retourner)
-                pass
     
+    if direction=='west':
+        if cotegarage=='left':
+            if x1==0 and z1==0:
+                for i in range(3):
+                    if i==2:
+                        mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),toit_planche)
+                        mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),toit_slab)
+                        mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),toit_slab)
+                        
+                    else:
+                        mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),mur)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),mur)
+                        
+                    poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+2+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),toit_esca_gauch_rete)
+                    editor.placeBlock((x2-1-i,y1+4+i,z2),toit_esca_devant_ret)
+                    editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+            elif x1==0:
+                for i in range(3):
+                    if i==2:
+                        mur_sol((x1-1,y1+4+i,z1+i),(x2+2-i,y1+4+i,midtailleZ-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),toit_planche)
+                        mur_sol((x1-1,y1+5+i,z1+i),(x2+2-i,y1+5+i,midtailleZ-i),toit_slab)
+                        mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),toit_slab)
+                        
+                    else:
+                        mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),mur)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),mur)
+                        
+                    poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+2+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),toit_esca_gauch_rete)
+                    editor.placeBlock((x2-1-i,y1+4+i,z2),toit_esca_devant_ret)
+                    editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                    
+            elif  z1==0:
+                for i in range(3):
+                    if i==2:
+                        mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),toit_planche)
+                        mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),toit_slab)
+                        mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),toit_slab)
+                        
+                    else:
+                        mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),mur)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),mur)
+                        
+                    poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),toit_esca_gauch_rete)
+                    editor.placeBlock((x2-1-i,y1+4+i,z2),toit_esca_devant_ret)
+                    editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                
+            
+            
+            
+            else:
+                for i in range(3):
+                    if i==2:
+                        mur_sol((x1-1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2+1),toit_planche)
+                        mur_sol((x1-1,y1+5+i,z1+i),(x2-i,y1+5+i,midtailleZ-i),toit_slab)
+                        mur_sol((midtailleX+i,y1+5+i,midtailleZ-i),(x2-i,y1+5+i,z2+1),toit_slab)
+                        
+                    else:
+                        mur_sol((x1,y1+4+i,z1+i),(x2-i,y1+4+i,midtailleZ-i),mur)
+                        mur_sol((midtailleX+i,y1+4+i,midtailleZ-i),(x2-i,y1+4+i,z2),mur)
+                        
+                        
+                    poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ+1-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ-i-1),toit_esca_gauch_rete)
+                    editor.placeBlock((x2-1-i,y1+4+i,z2),toit_esca_devant_ret)
+                    editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                
+    
+        elif cotegarage=='right':
+            if x1==0 and z1==0:
+            
+                for i in range(3):
+                    if i==2:
+                        
+                        
+                        mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),toit_slab)
+                        mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),toit_slab)
+                        
+                    else:
+                        mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),mur)
+                        mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),mur)
+                    
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+2+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+3-i),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+2,y1+4-i,z2-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+1+i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    pass
+            elif x1==0:
+                for i in range(3):
+                    if i==2:
+                    
+                        
+                        mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),toit_slab)
+                        mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),toit_slab)
+                        
+                    else:
+                        mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),mur)
+                        mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),mur)
+                    
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+2+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+1-i),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+2,y1+4-i,z2-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    pass
+                
+            elif z1==0:
+                
+                for i in range(3):
+                    if i==2:
+                    
+                        
+                        mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i+1),toit_slab)
+                        mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),toit_slab)
+                        
+                    else:
+                        mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),mur)
+                        mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),mur)
+                    
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+2-i),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+1,y1+4-i,z2-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+1+i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    
+            else:
+                
+                for i in range(3):
+                    if i==2:
+                    
+                        
+                        mur_sol((midtailleX+i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((x1-1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),toit_planche)
+                        mur_sol((midtailleX+i,y1+5+i,z1-1),(x2-i,y1+5+i,z2-i),toit_slab)
+                        mur_sol((x1-1,y1+5+i,midtailleZ+i),(x2-i,y1+5+i,z2-i),toit_slab)
+                        
+                    else:
+                        mur_sol((midtailleX+i,y1+4+i,z1),(x2-i,y1+4+i,z2-i),mur)
+                        mur_sol((x1,y1+4+i,midtailleZ+i),(x2-i,y1+4+i,z2-i),mur)
+                        
+                        
+                    poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_esca_derriere)
+                    poserEscalier((x1-1,y1+4+i,z2-i),(x2-i+1,y1+4-i,z2-i),toit_esca_droite)
+                    poserEscalier((midtailleX-1+i,y1+4+i,z1-1),(midtailleX-1+i,y1+4+i,midtailleZ+i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    pass
+                
+                
+                
+                
+                
+                
+                
+                
+                
+    elif direction=='east':
+        
+         
+        if cotegarage=='left':
+            if x1==0 and z1==0:
+                for i in range(3):
+                    if i==2:
+                        i=1
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                        mur_sol((x1+1+i,y1+5+i,z1-1),(midtailleX-i,y1+5+i,midtailleZ+2),toit_planche)
+                        mur_sol((x1+1+i,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                        mur_sol((x1+1+i,y1+6+i,z1-1),(midtailleX-i,y1+6+i,midtailleZ+2),toit_slab)
+                        i=2
+                        
+                    else:
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2,y1+5+i,z2-1-i),mur)
+                        mur_sol((x1+1+i,y1+5+i,z1),(midtailleX-i,y1+5+i,midtailleZ+2),mur)
+                        
+                    poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((midtailleX+1-i,y1+4+i,z1-1),(midtailleX+1-i,y1+4+i,midtailleZ+i+1),toit_esca_derriere)
+                    poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                    poserEscalier((x1-1+i,y1+4+i,z1-1),(x1-1+i,y1+4+i,z2+3-i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    pass
+                    editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    editor.placeBlock((midtailleX-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    
+                    
+                    
+            elif x1==0:
+                for i in range(3):
+                    if i==2:
+                        i=1
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                        mur_sol((x1+1+i,y1+5+i,z1-1),(midtailleX-i,y1+5+i,midtailleZ+2),toit_planche)
+                        mur_sol((x1+1+i,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                        mur_sol((x1+1+i,y1+6+i,z1-1),(midtailleX-i,y1+6+i,midtailleZ+2),toit_slab)
+                        i=2
+                        
+                    else:
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2,y1+5+i,z2-1-i),mur)
+                        mur_sol((x1+1+i,y1+5+i,z1),(midtailleX-i,y1+5+i,midtailleZ+2),mur)
+                        
+                    poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((midtailleX+1-i,y1+4+i,z1-1),(midtailleX+1-i,y1+4+i,midtailleZ+i),toit_esca_derriere)
+                    poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                    poserEscalier((x1-1+i,y1+4+i,z1-1),(x1-1+i,y1+4+i,z2+1-i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    pass
+                    editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    editor.placeBlock((midtailleX-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                    
+                    
+                    
+            elif  z1==0:
+                for i in range(3):
+                    if i==2:
+                        i=1
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                        mur_sol((x1+1+i,y1+5+i,z1-1),(midtailleX-i,y1+5+i,midtailleZ+2),toit_planche)
+                        mur_sol((x1+1+i,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                        mur_sol((x1+1+i,y1+6+i,z1-1),(midtailleX-i,y1+6+i,midtailleZ+2),toit_slab)
+                        i=2
+                        
+                    else:
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2,y1+5+i,z2-1-i),mur)
+                        mur_sol((x1+1+i,y1+5+i,z1),(midtailleX-i,y1+5+i,midtailleZ+2),mur)
+                        
+                    poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((midtailleX+1-i,y1+4+i,z1-1),(midtailleX+1-i,y1+4+i,midtailleZ+i+1),toit_esca_derriere)
+                    poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                    poserEscalier((x1-1+i,y1+4+i,z1-1),(x1-1+i,y1+4+i,z2+3-i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    pass
+                    editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    editor.placeBlock((midtailleX-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                
+            
+            
+            
+            else:
+                for i in range(3):
+                    if i==2:
+                        i=1
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                        mur_sol((x1+1+i,y1+5+i,z1-1),(midtailleX-i,y1+5+i,midtailleZ+2),toit_planche)
+                        mur_sol((x1+1+i,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                        mur_sol((x1+1+i,y1+6+i,z1-1),(midtailleX-i,y1+6+i,midtailleZ+2),toit_slab)
+                        i=2
+                        
+                    else:
+                        mur_sol((x1+1+i,y1+5+i,midtailleZ+1+i),(x2,y1+5+i,z2-1-i),mur)
+                        mur_sol((x1+1+i,y1+5+i,z1),(midtailleX-i,y1+5+i,midtailleZ+2),mur)
+                        
+                    poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                    poserEscalier((midtailleX+1-i,y1+4+i,z1-1),(midtailleX+1-i,y1+4+i,midtailleZ+i),toit_esca_derriere)
+                    poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                    poserEscalier((x1-1+i,y1+4+i,z1-1),(x1-1+i,y1+4+i,z2+1-i),toit_esca_devant)
+                    if hauteurMax==5+i:
+                        break
+                for i in range(2):
+                    pass
+                    editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                    editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                    editor.placeBlock((midtailleX-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                    editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                
+
+        elif cotegarage=='right':
+                if x1==0 and z1==0:
+                        for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ-2),(midtailleX-i,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+2,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ-2),(midtailleX-i,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ),(midtailleX-i,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-i),(midtailleX+1-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX+2-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1-1+i,y1+4+i,z1+i),(x1-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((midtailleX-i,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                        
+                    
+                    
+                elif x1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ-2),(midtailleX-i,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+2,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ-2),(midtailleX-i,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ),(midtailleX-i,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-i),(midtailleX+1-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX+2-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1-1+i,y1+4+i,z1+i),(x1-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((midtailleX-i,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                        
+                        
+                elif  z1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ-2),(midtailleX-i,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+2,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ-2),(midtailleX-i,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ),(midtailleX-i,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-i),(midtailleX+1-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX+2-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1-1+i,y1+4+i,z1+i),(x1-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((midtailleX-i,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                
+            
+            
+            
+                else:
+                    for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ-2),(midtailleX-i,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+2,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ-2),(midtailleX-i,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                mur_sol((x1+2,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ),(midtailleX-i,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX+1-i,y1+4+i,midtailleZ-i),(midtailleX+1-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX+2-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1-1+i,y1+4+i,z1+i),(x1-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((midtailleX-i,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                
             
     
+    elif direction=='north':
+        
+         
+        if cotegarage=='left':
+            if x1==0 and z1==0:
+                        for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,midtailleZ+i+1),(x2-1-i,y1+5+i,z2-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1-1),(x2-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1-1,y1+6+i,midtailleZ+i+1),(x2-1-i,y1+6+i,z2-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1-1),(x2-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,midtailleZ+i+1),(x2-i,y1+5+i,z2-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1),(x2-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+1+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+3-i),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,z2-i),(x2+3-i,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((midtailleX+i-1,y1+4+i,z1-1),(midtailleX+i-1,y1+4+i,midtailleZ+2+i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                        
+                    
+                    
+            elif x1==0:
+                  for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,midtailleZ+i+1),(x2-1-i,y1+5+i,z2-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1-1),(x2-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1-1,y1+6+i,midtailleZ+i+1),(x2-1-i,y1+6+i,z2-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1-1),(x2-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,midtailleZ+i+1),(x2-i,y1+5+i,z2-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1),(x2-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+1+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2-i),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,z2-i),(x2+3-i,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((midtailleX+i-1,y1+4+i,z1-1),(midtailleX+i-1,y1+4+i,midtailleZ+i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+            elif  z1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,midtailleZ+i+1),(x2-1-i,y1+5+i,z2-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1-1),(x2-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1-1,y1+6+i,midtailleZ+i+1),(x2-1-i,y1+6+i,z2-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1-1),(x2-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,midtailleZ+i+1),(x2-i,y1+5+i,z2-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1),(x2-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+1+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+3-i),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,z2-i),(x2-i,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((midtailleX+i-1,y1+4+i,z1-1),(midtailleX+i-1,y1+4+i,midtailleZ+2+i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                
+            
+            
+            
+            else:
+                    for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,midtailleZ+i+1),(x2-1-i,y1+5+i,z2-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1-1),(x2-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1-1,y1+6+i,midtailleZ+i+1),(x2-1-i,y1+6+i,z2-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1-1),(x2-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,midtailleZ+i+1),(x2-i,y1+5+i,z2-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1),(x2-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-1+i),(midtailleX+1+i,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1-1),(x2-i,y1+4+i,z2+1-i),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,z2-i),(x2-i,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((midtailleX+i-1,y1+4+i,z1-1),(midtailleX+i-1,y1+4+i,midtailleZ+i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((x2-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x1-1,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                
+
+        elif cotegarage=='right':
+                if x1==0 and z1==0:
+                        for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1-1),(midtailleX-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1-1),(midtailleX-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+i,y1+5+i,midtailleZ+i+1),(x2,y1+5+i,z2-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1),(midtailleX-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,z1-1),(midtailleX-i,y1+4+i,midtailleZ+1+i),toit_esca_derriere)
+                            poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1-1),(x1+i-1,y1+4+i,z2+3-i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((midtailleX-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                        
+                    
+                    
+                elif x1==0:
+                  for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1-1),(midtailleX-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1-1),(midtailleX-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+i,y1+5+i,midtailleZ+i+1),(x2,y1+5+i,z2-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1),(midtailleX-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,z1-1),(midtailleX-i,y1+4+i,midtailleZ+i),toit_esca_derriere)
+                            poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1-1),(x1+i-1,y1+4+i,z2+1-i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((midtailleX-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                        
+                        
+                elif  z1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1-1),(midtailleX-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1-1),(midtailleX-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+i,y1+5+i,midtailleZ+i+1),(x2,y1+5+i,z2-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1),(midtailleX-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,z1-1),(midtailleX-i,y1+4+i,midtailleZ+1+i),toit_esca_derriere)
+                            poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1-1),(x1+i-1,y1+4+i,z2+3-i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((midtailleX-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                
+            
+            
+            
+                else:
+                    for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+i+1,y1+5+i,midtailleZ+1+i),(x2+1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1-1),(midtailleX-i-1,y1+5+i,z2-1-i),toit_planche)
+                                mur_sol((x1+i+1,y1+6+i,midtailleZ+1+i),(x2+1,y1+6+i,z2-1-i),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1-1),(midtailleX-i-1,y1+6+i,z2-1-i),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+i,y1+5+i,midtailleZ+i+1),(x2,y1+5+i,z2-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1),(midtailleX-i-1,y1+5+i,z2-i),mur)
+                                
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-1+i),(x2+1,y1+4+i,midtailleZ-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,z1-1),(midtailleX-i,y1+4+i,midtailleZ+i),toit_esca_derriere)
+                            poserEscalier((x1+i,y1+4+i,z2-i),(x2+1,y1+4+i,z2-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1-1),(x1+i-1,y1+4+i,z2+1-i),toit_esca_devant)
+                         
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x1+i,y1+4+i,z1-1),toit_esca_derriere_ret)
+                                editor.placeBlock((midtailleX-1-i,y1+4+i,z1-1),toit_esca_devant_ret)
+                                editor.placeBlock((x2,y1+4+i,z2-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ+i),toit_esca_droite_ret)
+                
+                    
+    elif direction=='south':
+        
+         
+        if cotegarage=='left':
+            if x1==0 and z1==0:
+                        for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+1+i,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1+1+i),(midtailleX-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(midtailleX-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1+i),(x1+i-1,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                        
+                    
+                    
+            elif x1==0:
+                  for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+1+i,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1+1+i),(midtailleX-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(midtailleX-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1+i),(x1+i-1,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+            elif  z1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+1+i,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1+1+i),(midtailleX-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(midtailleX-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1+i),(x1+i-1,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                
+            
+            
+            
+            else:
+                    for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2+1,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1+1+i,y1+6+i,z1+i+1),(x2+1,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((x1+i+1,y1+6+i,z1+1+i),(midtailleX-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1+1+i,y1+5+i,z1+i+1),(x2,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((x1+i+1,y1+5+i,z1+1+i),(midtailleX-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1+i,y1+4+i,z1-1+i),(x2+1,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(midtailleX-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((midtailleX-i,y1+4+i,midtailleZ-i),(x2+1,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((x1+i-1,y1+4+i,z1+i),(x1+i-1,y1+4+i,z2+1),toit_esca_devant)
+                            editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((midtailleX-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((x1+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x2,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x2,y1+4+i,z1+i),toit_esca_droite_ret)
+                
+
+        elif cotegarage=='right':
+                if x1==0 and z1==0:
+                        for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1-1,y1+6+i,z1+i+1),(x2-1-i,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1+1+i),(x2-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+1+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            #editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                        
+                    
+                    
+                elif x1==0:
+                  for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1-1,y1+6+i,z1+i+1),(x2-1-i,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1+1+i),(x2-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+3-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+1+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            #editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                elif  z1==0:
+                   for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1-1,y1+6+i,z1+i+1),(x2-1-i,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1+1+i),(x2-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+1+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            #editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                
+            
+            
+            
+                else:
+                    for i in range(3):
+                            if i==2:
+                                i=1
+                                mur_sol((x1-1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),toit_planche)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2+1),toit_planche)
+                                mur_sol((x1-1,y1+6+i,z1+i+1),(x2-1-i,y1+6+i,midtailleZ-i-1),toit_slab)
+                                mur_sol((midtailleX+i+1,y1+6+i,z1+1+i),(x2-i-1,y1+6+i,z2+1),toit_slab)
+                                i=2
+                                
+                            else:
+                                pass
+                                mur_sol((x1,y1+5+i,z1+i+1),(x2-1-i,y1+5+i,midtailleZ-i-1),mur)
+                                mur_sol((midtailleX+i+1,y1+5+i,z1+1+i),(x2-i-1,y1+5+i,z2),mur)
+                                
+                            poserEscalier((x1-1,y1+4+i,z1-1+i),(x2+1-i,y1+4+i,z1-1+i),toit_esca_gauche)
+                            poserEscalier((x2-i,y1+4+i,z1+i),(x2-i,y1+4+i,z2+1),toit_esca_derriere)
+                            poserEscalier((x1-1,y1+4+i,midtailleZ-i),(midtailleX+1+i,y1+4+i,midtailleZ-i),toit_esca_droite)
+                            poserEscalier((midtailleX-1+i,y1+4+i,midtailleZ-i),(midtailleX-1+i,y1+4+i,z2+1),toit_esca_devant)
+                            #editor.placeBlock((x1-1+i,y1+4+i,z1-1+i),toit_esca_devant)
+                            if hauteurMax==5+i:
+                                break
+                            for i in range(2):
+                                pass
+                                editor.placeBlock((x2-i-1,y1+4+i,z2),toit_esca_devant_ret)
+                                editor.placeBlock((midtailleX+i,y1+4+i,z2),toit_esca_derriere_ret)
+                                editor.placeBlock((x1-1,y1+4+i,midtailleZ-1-i),toit_esca_gauch_rete)
+                                editor.placeBlock((x1-1,y1+4+i,z1+i),toit_esca_droite_ret)
+                
 def poserFenetre(co1,co2,type):
     editor = Editor(buffering=  True) 
     
@@ -350,7 +1107,7 @@ def poserFenetre(co1,co2,type):
                     
                     
                     
-                    
+            
 
 def poserGarage(co1,co2):
     editor = Editor(buffering=  True) 
@@ -359,7 +1116,7 @@ def poserGarage(co1,co2):
     
                 
     if co2[0]==co1[0]:
-       
+     
         for i in range(abs(abs(co2[1])-abs(co1[1]))):
             for j in range((abs(co2[2])-abs(co1[2]))):
                
@@ -395,17 +1152,55 @@ def poserGarage(co1,co2):
                     editor.placeBlock((co1[0],co2[1],co1[2]+3+i*5),stairs_quartz_droite)
                     editor.placeBlock((co1[0],co2[1],co1[2]+4+i*5),stairs_quartz_gauche)
                 
+    elif co1[2]==co2[2]:
+        
+        if x%3==0:
+            
+            for i in range(x//3):
+                    editor.placeBlock((co1[0]+i*3,co2[1],co1[2]),stairs_quartz_derriere)
+                    editor.placeBlock((co1[0]+1+i*3,co2[1],co1[2]),quartz_slab_up)
+                    editor.placeBlock((co1[0]+2+i*3,co2[1],co1[2]),stairs_quartz_devant)
+        elif x%2==0:
+            for i in range(x):
+                if i%2==0:
+                    editor.placeBlock((co1[0]+i,co2[1],co1[2]),stairs_quartz_derriere)
+                else:
+                    editor.placeBlock((co1[0]+i,co2[1],co1[2]),stairs_quartz_devant)
+        elif  x%5==0:
+            for i in range((x//5)):
                     
+                    editor.placeBlock((co1[0]+i*5,co2[1],co1[2]),stairs_quartz_derriere)
+                    editor.placeBlock((co1[0]+1+i*5,co2[1],co1[2]),stairs_quartz_devant)
+                    editor.placeBlock((co1[0]+2+i*5,co2[1],co1[2]),block_quartz)
+                    editor.placeBlock((co1[0]+3+i*5,co2[1],co1[2]),stairs_quartz_derriere)
+                    editor.placeBlock((co1[0]+4+i*5,co2[1],co1[2]),stairs_quartz_devant)
+        
             
 
                     
                 
             
 
-def house(co1,co2,cotegarage,hauteurMax):# ,style,etage,direction):
+def house(co1,co2,cotegarage,hauteurMax,style,direction):# ,etage):
     """
     Minimun 10*10 
     """
+    
+    sol=Block(style['sol'])
+    mur=Block(style['mur'])
+    grass=Block(style['grass'])
+    chemin=Block(style['chemin'])
+    fence=Block(style['fence'])
+    
+    glass=Block(style['glass'])
+    
+    
+    
+    
+    
+    
+    
+    
     tailleX=abs(co2[0])-abs(co1[0])
     
     hauteurMin=min(co2[1],co1[1])
@@ -424,144 +1219,560 @@ def house(co1,co2,cotegarage,hauteurMax):# ,style,etage,direction):
     midtailleX=(tailleX//2)+x1
     midtailleZ=(tailleZ//2)+z1
     
-    
-    if cotegarage=='right':
-        
+    if direction=='west':
+        door=Block(style['door'],{"facing": "east"})
+        if cotegarage=='right':
+            
+                                    
+                                    
                                 
-                                
-                             
-        #murs
-        poserGarage((x1+1,y1+1,midtailleZ+1),(x1+1,y1+3,z2-1))
-        mur_sol((x1,y1+1,z2-1),(x2,y1+5,z2-1),block_white_concrete)
-        mur_sol((x1,y1+1,midtailleZ),(x1,y1+5,z2   ),block_white_concrete)
-        mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),block_white_concrete)
-        mur_sol((x1,y1+1,midtailleZ),(midtailleX+1,y1+5,midtailleZ),block_white_concrete)
-        mur_sol((midtailleX,y1+1,z1),(x2,y1+5,z1),block_white_concrete)
-        mur_sol((midtailleX,y1+1,z1),(midtailleX,y1+5,midtailleZ),block_white_concrete)
-        
-        
-        mur_sol((x1,y1+1,midtailleZ+1),(x1,y1+4,z2-1   ),air)
-        
-        #sols/plafonds
-        mur_sol((midtailleX,y1+4,z1),(x2,y1+4,z2),block_white_concrete)
-        mur_sol((midtailleX,y1,z1),(x2,y1,z2),oak_planks)
-        mur_sol((x1,y1+4,midtailleZ),(midtailleX,y1+4,z2),block_white_concrete)
-        mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),oak_planks)
-        mur_sol((x1,y1,z1),(midtailleX,y1,midtailleZ),grass_block)
-        
-      
-        
-        poserFenetre((midtailleX,y1+1,z1+1),(midtailleX,y1+5,midtailleZ-1),glass)
-        poserFenetre((midtailleX+1,y1+1,z1),(x2-1,y1+5,z1),glass)
-        poserFenetre((x1+2,y1+1,midtailleZ),(midtailleX-1,y1+5,midtailleZ),glass)
-        poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1),glass)
-        poserFenetre((x1+2,y1+1,z2-1),(x2-1,y1+4,z2-1),glass)
-        
-        if  ((z2-z1)//2)%2==0:
-                print(z1+(tailleZ//4))
-                poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)),door_east)
-                poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)-1),door_east)
-                mur_sol((x1,y1,z1+(tailleZ//4)-1),(x1+tailleX//2,y1,z1+(tailleZ//4)+1),block_quartz)
-                for i in range(tailleX):
-                    for j in range(tailleZ):
-                        if(z1+j != z1+(tailleZ//4) and z1+j != z1+(tailleZ//4)-1 ) and (x1+i< x1+(tailleX//2) and z1+j<z1+(tailleZ//2)) and(x1+i==x1 or z1+j==z1) and (z1+j != z1+(tailleZ//4) or z1+j != z1+(tailleZ//4)-1) :
-                           
-                            editor.placeBlock((x1+i,y1+1,z1+j),oak_fence)
-                
-        else:
-             
-                poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleX//4)),door_east)
-                mur_sol((x1,y1,z1+(tailleZ//4)),(x1+tailleX//2,y1,z1+(tailleZ//4)+1),block_quartz)
-                for i in range(tailleX):
-                    for j in range(tailleZ):
-                        if (x1+i< x1+(tailleX//2) and z1+j<z1+(tailleZ//2)) and(x1+i==x1 or z1+j==z1) and z1+j != z1+(tailleZ//4):
-                            
-                            editor.placeBlock((x1+i,y1+1,z1+j),oak_fence)
-                
-                
-        poserToit(co1,co2,hauteurMax,cotegarage)    
-        
-       
-    
-    
-    elif cotegarage=='left':
+            #murs
+            poserGarage((x1+1,y1+1,midtailleZ+1),(x1+1,y1+3,z2-1))
+            mur_sol((x1,y1+1,z2-1),(x2,y1+5,z2-1),mur)
+            mur_sol((x1,y1+1,midtailleZ),(x1,y1+5,z2   ),mur)
+            mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),mur)
+            mur_sol((x1,y1+1,midtailleZ),(midtailleX+1,y1+5,midtailleZ),mur)
+            mur_sol((midtailleX,y1+1,z1),(x2,y1+5,z1),mur)
+            mur_sol((midtailleX,y1+1,z1),(midtailleX,y1+5,midtailleZ),mur)
+            
+            
+            mur_sol((x1,y1+1,midtailleZ+1),(x1,y1+4,z2-1   ),air)
+            
+            #sols/plafonds
+            mur_sol((midtailleX,y1+4,z1),(x2,y1+4,z2),mur)
+            mur_sol((midtailleX,y1,z1),(x2,y1,z2),sol)
+            mur_sol((x1,y1+4,midtailleZ),(midtailleX,y1+4,z2),mur)
+            mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),sol)
+            mur_sol((x1,y1,z1),(midtailleX,y1,midtailleZ),grass)
             
         
+            
+            poserFenetre((midtailleX,y1+1,z1+1),(midtailleX,y1+5,midtailleZ-1),glass)
+            poserFenetre((midtailleX+1,y1+1,z1),(x2-1,y1+5,z1),glass)
+            poserFenetre((x1+2,y1+1,midtailleZ),(midtailleX-1,y1+5,midtailleZ),glass)
+            poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1),glass)
+            poserFenetre((x1+2,y1+1,z2-1),(x2-1,y1+4,z2-1),glass)
+            
+            if  ((z2-z1)//2)%2==0:
+                    print(z1+(tailleZ//4))
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)),door)
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)-1),door)
+                    mur_sol((x1,y1,z1+(tailleZ//4)-1),(x1+tailleX//2,y1,z1+(tailleZ//4)+1),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if(z1+j != z1+(tailleZ//4) and z1+j != z1+(tailleZ//4)-1 ) and (x1+i< x1+(tailleX//2) and z1+j<z1+(tailleZ//2)) and(x1+i==x1 or z1+j==z1) and (z1+j != z1+(tailleZ//4) or z1+j != z1+(tailleZ//4)-1) :
+                            
+                                editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                    
+            else:
+                
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleX//4)),door)
+                    mur_sol((x1,y1,z1+(tailleZ//4)),(x1+tailleX//2,y1,z1+(tailleZ//4)+1),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (x1+i< x1+(tailleX//2) and z1+j<z1+(tailleZ//2)) and(x1+i==x1 or z1+j==z1) and z1+j != z1+(tailleZ//4):
+                                
+                                editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                    
+                    
+            poserToit(co1,co2,hauteurMax,cotegarage,style,direction)    
+            
+        
+        
+        
+        elif cotegarage=='left':
+                
+            
+                                
+                        
+                                    
+                    
+                
+                
+                            
+                        
+                                    
+            
+            
+            #murs
+            poserGarage((x1+1,y1+1,z1+1),(x1+1,y1+3,midtailleZ-1))
+            mur_sol((x1,y1+1,z1),(x2,y1+5,z1),mur)
+            mur_sol((x1,y1+1,z1),(x1,y1+5,midtailleZ   ),mur)
+            mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),mur)
+            mur_sol((x1,y1+1,midtailleZ-1),(midtailleX+1,y1+5,midtailleZ-1),mur)
+            mur_sol((midtailleX,y1+1,midtailleZ),(midtailleX,y1+5,z2),mur)
+            mur_sol((midtailleX,y1+1,z2-1),(x2,y1+5,z2-1),mur)
+            
+            
+            mur_sol((x1,y1+1,z1+1),(x1,y1+4,midtailleZ-1),air)
+            
+            #sols/plafonds
+            mur_sol((x1,y1+4,z1),(x2,y1+4,midtailleZ),mur)
+            mur_sol((x1,y1,z1),(x2,y1,midtailleZ),oak_planks)
+            mur_sol((midtailleX,y1+4,midtailleZ),(x2,y1+4,z2),mur)
+            mur_sol((midtailleX,y1,midtailleZ),(x2,y1,z2),oak_planks)
+            mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),grass_block)
+            
+            poserFenetre((midtailleX,y1+1,midtailleZ+1),(midtailleX,y1+5,z2-1),glass)
+            poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1),glass)
+            poserFenetre((midtailleX+1,y1+1,z2-1),(x2-1,y1+5,z2-1),glass)
+            poserFenetre((x1+2,y1+1,z1),(x2-1,y1+5,z1),glass)
+            poserFenetre((x1+2,y1+1,midtailleZ-1),(midtailleX-1,y1+5,midtailleZ-1),glass)
+            
+            
+            
+        
+            if  (tailleZ-((z2-z1)//2))%2==0:
+        
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-2),door)
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-1),door)
+                    mur_sol((x1,y1,z2-(tailleZ//4)-2),(x1+tailleX//2,y1,z2-(tailleZ//4)),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (x1+i< x1+(tailleX//2) and z2-j>=z2-tailleZ//2 ) and(x1+i==x1 or z2-j==z2) and z2-j != z2-(tailleZ//4)-1 and z2-j != z2-(tailleZ//4):
+                                
+                                editor.placeBlock((x1+i,y1+1,z2-1-j),fence)
+            else:
+                
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-1),door)
+                    mur_sol((x1,y1,z2-(tailleZ//4)-1),(x1+tailleX//2,y1,z2-(tailleZ//4)),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (x1+i< x1+(tailleX//2) and z2-j>=z2-tailleZ//2 ) and (x1+i==x1 or z2-j==z2) and z2-j != z2-(tailleZ//4):
+                                print(1)
+                                editor.placeBlock((x1+i,y1+1,z2-1-j),fence)
                             
                     
+                    
+                    
+            poserToit(co1,co2,hauteurMax,cotegarage,style,direction)    
+            
+            
+            
+        
+        print('Done')
+    
+    
+    
+    
+    elif direction=='east' :
+        door=Block(style['door'],{"facing": "west"})
+        if cotegarage=='right':
+            
+                                    
+                                    
                                 
+            #murs
+             #murs
+            poserGarage((x2-2,y1+1,z1+1),(x2-2,y1+3,midtailleZ-1))
+            mur_sol((x1,y1+1,z1),(x2,y1+5,z1),mur)
+            mur_sol((x1,y1+1,z1),(x1,y1+5,z2   ),mur)
+            mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,midtailleZ),mur)
+            mur_sol((midtailleX,y1+1,midtailleZ),(midtailleX,y1+5,z2),mur)
+            mur_sol((midtailleX,y1+1,midtailleZ-1),(x2,y1+5,midtailleZ-1),mur)
+            mur_sol((x1,y1+1,z2-1),(midtailleX,y1+5,z2-1),mur)
+            
+            
+            mur_sol((x2-1,y1+1,z1+1),(x2-1,y1+4,midtailleZ-1),air)
+            #print((x2-2,y1+1,midtailleZ+1),(x2-2,y1+3,z2-1))
+            
+            #sols/plafonds
+            mur_sol((x1,y1+4,z1),(x2,y1+4,midtailleZ),mur)
+            mur_sol((x1,y1,z1),(x2,y1,midtailleZ),sol)
+            mur_sol((x1,y1+4,midtailleZ),(midtailleX+1,y1+4,z2),mur)
+            mur_sol((x1,y1,midtailleZ),(midtailleX+1,y1,z2),sol)
+            mur_sol((midtailleX+1,y1,midtailleZ),(x2,y1,z2),grass)
+            
+            poserFenetre((x1+1,y1+1,z2-1),(midtailleX-1,y1+5,z2-1),glass)
+            poserFenetre((midtailleX+1,y1+1,midtailleZ-1),(x2-2,y1+5,midtailleZ-1),glass)
+            poserFenetre((midtailleX,y1+1,midtailleZ+1),(midtailleX,y1+5,z2-1),glass)
+            poserFenetre((x1+1,y1+1,z1),(x2-1,y1+5,z1),glass)
+            poserFenetre((x1,y1+1,z1+1),(x1,y1+5,z2-1   ),glass)
+            
+            
+            
+    
+    
+            if  (tailleZ-((z2-z1)//2))%2==0:
+        
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-1-(tailleZ//4)),door)
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-2),door)
+                    mur_sol((midtailleX,y1,z2-2-(tailleZ//4)),(x2,y1,z2-(tailleZ//4)-4),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (midtailleX+1+i< x2 and z1+j>=midtailleZ ) and (midtailleX+i+1==x2-1 or z1+j==z2-1)   and z1+j != z2-1-(tailleZ//4) and z1+j != z2-2-(tailleZ//4) :
+                                
+                                editor.placeBlock((midtailleX+1+i,y1+1,z1+j),fence)
+            else:
                 
-              
-               
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z2-1-(tailleZ//4)),door)
+                    mur_sol((midtailleX,y1,z2-1-(tailleZ//4)),(x2,y1,z2-(tailleZ//4)-2),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (midtailleX+1+i< x2 and z1+j>=midtailleZ ) and (midtailleX+i+1==x2-1 or z1+j==z2-1)   and z1+j != z2-1-(tailleZ//4):
+                                print(1)
+                                editor.placeBlock((midtailleX+i+1,y1+1,z1+j),fence)
+                            
+                    
+                    
+                    
+            poserToit(co1,co2,hauteurMax,cotegarage,style,direction )    
+            
+        
+        
+        
+        elif cotegarage=='left':
+                
+            
+                                
+                        
+                                    
+                    
+                
+                
+                            
+                   
+                                
+            #murs
+            poserGarage((x2-2,y1+1,midtailleZ+1),(x2-2,y1+3,z2-1))
+            mur_sol((x1,y1+1,z1),(midtailleX,y1+5,z1),mur)
+            mur_sol((x1,y1+1,z1),(x1,y1+5,z2   ),mur)
+            mur_sol((x2-1,y1+1,midtailleZ),(x2-1,y1+5,z2),mur)
+            mur_sol((midtailleX,y1+1,z1),(midtailleX,y1+5,midtailleZ),mur)
+            mur_sol((midtailleX,y1+1,midtailleZ),(x2,y1+5,midtailleZ),mur)
+            mur_sol((x1,y1+1,z2-1),(x2,y1+5,z2-1),mur)
+            
+            
+            mur_sol((x2-1,y1+1,midtailleZ+1),(x2-1,y1+4,z2-1),air)
+            #print((x2-2,y1+1,midtailleZ+1),(x2-2,y1+3,z2-1))
+            
+            #sols/plafonds
+            mur_sol((x1,y1+4,midtailleZ),(x2,y1+4,z2),mur)
+            mur_sol((x1,y1,midtailleZ),(x2,y1,z2),sol)
+            mur_sol((x1,y1+4,z1),(midtailleX+1,y1+4,midtailleZ),mur)
+            mur_sol((x1,y1,z1),(midtailleX+1,y1,midtailleZ),sol)
+            mur_sol((midtailleX+1,y1,z1),(x2,y1,midtailleZ),grass)
+            
+            poserFenetre((x1+1,y1+1,z1),(midtailleX,y1+5,z1),glass)
+            poserFenetre((x1,y1+1,z1+1),(x1,y1+5,z2-1   ),glass)
+            poserFenetre((midtailleX,y1+1,z1+1),(midtailleX,y1+5,midtailleZ-1),glass)
+            poserFenetre((midtailleX+2,y1+1,midtailleZ),(x2-2,y1+5,midtailleZ),glass)
+            poserFenetre((x1+1,y1+1,z2-1),(x2-1,y1+5,z2-1),glass)
+            
+            
+            
+    
+    
+            if  ((z2-z1)//2)%2==0:
+        
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)),door)
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)+1),door)
+                    mur_sol((midtailleX,y1,z1+(tailleZ//4)),(x2,y1,z1+(tailleZ//4)+2),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (midtailleX+1+i< x2 and z1+j<midtailleZ ) and(midtailleX+i+1==x2-1 or z1+j==z1)and z2-j != z2-(tailleZ//4)-1 and z2-j != z2-(tailleZ//4):
+                                
+                                editor.placeBlock((x1+i,y1+1,z2-1-j),fence)
+            else:
+                
+                    poserPorte((x1+tailleX//2,hauteurMin+1,z1+(tailleZ//4)),door)
+                    mur_sol((midtailleX,y1,z1+(tailleZ//4)),(x2,y1,z1+(tailleZ//4)+1),chemin)
+                    for i in range(tailleX):
+                        for j in range(tailleZ):
+                            if (midtailleX+1+i< x2 and z1+j<midtailleZ ) and (midtailleX+i+1==x2-1 or z1+j==z1)   and z2-j != z2-(tailleZ//4):
+                                print(1)
+                                editor.placeBlock((midtailleX+i+1,y1+1,z1+j),fence)
+                            
+                    
+                    
+                    
+            poserToit(co1,co2,hauteurMax,cotegarage,style,direction )   
+        
+        
+        
+    elif direction=='north' :
+            door=Block(style['door'],{"facing": "south"})
+            if cotegarage=='right':
+                
+                                        
+                                        
+                                    
+                #murs
+                #murs
+                poserGarage((x1+1,y1+1,z1+1),(midtailleX-1,y1+3,z1+1))
+                mur_sol((x1,y1+1,z1),(midtailleX,y1+5,z1),mur)
+                mur_sol((midtailleX-1,y1+1,z1),(midtailleX-1,y1+5,midtailleZ   ),mur)
+                mur_sol((x1,y1+1,z1),(x1,y1+5,z2),mur)
+                mur_sol((x1,y1+1,z2-1),(x2,y1+5,z2-1),mur)
+                mur_sol((x2-1,y1+1,midtailleZ),(x2-1,y1+5,z2),mur)
+                mur_sol((midtailleX,y1+1,midtailleZ),(x2-1,y1+5,midtailleZ),mur)
+                
+                
+                mur_sol((x1+1,y1+1,z1),(midtailleX-1,y1+4,z1),air)
+         
+                
+                #sols/plafonds
+                mur_sol((x1,y1+4,z1),(x2,y1+4,z2),mur)
+                mur_sol((x1,y1,z1),(x2,y1,z2),sol)
+                
+                mur_sol((midtailleX,y1+4,z1),(x2,y1+4,midtailleZ),air)
+                
+                mur_sol((midtailleX,y1,z1),(x2,y1,midtailleZ),grass)
+                
+                poserFenetre((midtailleX+1,y1+1,midtailleZ),(x2-1,y1+5,midtailleZ),glass)
+                poserFenetre((x2-1,y1+1,midtailleZ+1),(x2-1,y1+5,z2-1),glass)
+                poserFenetre((x1+1,y1+1,z2-1),(x2-1,y1+5,z2-1),glass)
+                poserFenetre((x1,y1+1,z1+1),(x1,y1+5,z2-1),glass)
+                poserFenetre((midtailleX-1,y1+1,z1+2),(midtailleX-1,y1+5,midtailleZ -1  ),glass)
+                
+                
+                
+        
+        
+                if  (tailleX-((x2-x1)//2))%2==0:
+            
+                        poserPorte((x2-1-tailleX//4,hauteurMin+1,midtailleZ),door)
+                        poserPorte((x2-2-tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x2-2-tailleX//4,y1,z1),(x2-tailleX//4,y1,midtailleZ),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i>= midtailleX and z1+j<midtailleZ ) and (x1+i==x2-1 or z1+j==z1)   and x1+i != x2-1-tailleX//4 and x1+i != x2-2-tailleX//4:
+                                    
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                else:
+                    
+                        poserPorte((x2-1-tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x2-1-tailleX//4,y1,z1),(x2-tailleX//4,y1,midtailleZ),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i>= midtailleX and z1+j<midtailleZ ) and (x1+i==x2-1 or z1+j==z1)   and x1+i != x2-1-tailleX//4:
+                                    print(1)
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                                
+                        
+                        
+                        
+                poserToit(co1,co2,hauteurMax,cotegarage,style,direction )    
+                
+            
+            
+            
+            elif cotegarage=='left':
+                    
+                
+                                    
+                            
+                                        
                         
                     
+                    
+                                   
+                #murs
+                #murs
+                poserGarage((midtailleX+1,y1+1,z1+1),(x2-1,y1+3,z1+1))
+                mur_sol((x1,y1+1,midtailleZ),(midtailleX,y1+5,midtailleZ),mur)
+                mur_sol((midtailleX,y1+1,z1),(midtailleX,y1+5,midtailleZ   ),mur)
+                mur_sol((x1,y1+1,midtailleZ),(x1,y1+5,z2),mur)
+                mur_sol((x1,y1+1,z2-1),(x2,y1+5,z2-1),mur)
+                mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),mur)
+                
+                
+                
+               
+         
+                
+                #sols/plafonds
+                mur_sol((x1,y1+4,z1),(x2,y1+4,z2),mur)
+                mur_sol((x1,y1,z1),(x2,y1,z2),sol)
+                
+                mur_sol((x1,y1+4,z1),(midtailleX,y1+4,midtailleZ),air)
+                
+                mur_sol((x1,y1,z1),(midtailleX,y1,midtailleZ),grass)
+                
+                poserFenetre((x1+1,y1+1,midtailleZ),(midtailleX-1,y1+5,midtailleZ),glass)
+                poserFenetre((midtailleX,y1+1,z1+2),(midtailleX,y1+5,midtailleZ -1  ),glass)
+                poserFenetre((x1,y1+1,midtailleZ+1),(x1,y1+5,z2-1),glass)
+                poserFenetre((x1+1,y1+1,z2-1),(x2-1,y1+5,z2-1),glass)
+                poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1),glass)
+                
+                
+                
+        
+        
+                if  (((x2-x1)//2))%2==0:
+            
+                        poserPorte((x1+tailleX//4,hauteurMin+1,midtailleZ),door)
+                        poserPorte((x1+1+tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x1+1+tailleX//4,y1,z1),(x1+2+tailleX//4,y1,midtailleZ),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i>= midtailleX and z1+j<midtailleZ ) and (x1+i==x2-1 or z1+j==z1)   and x1+i != x1+tailleX//4 and x1+i != x1+1+tailleX//4:
+                                    
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                else:
+                    
+                        poserPorte((x1+tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x1+tailleX//4,y1,z1),(x1+1+tailleX//4,y1,midtailleZ),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i< midtailleX and z1+j<midtailleZ ) and (x1+i==x1 or z1+j==z1)   and x1+i != x1+tailleX//4:
+                                    print(1)
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
                                 
-        
-        
-        #murs
-        poserGarage((x1+1,y1+1,z1+1),(x1+1,y1+3,midtailleZ-1))
-        mur_sol((x1,y1+1,z1),(x2,y1+5,z1),block_white_concrete)
-        mur_sol((x1,y1+1,z1),(x1,y1+5,midtailleZ   ),block_white_concrete)
-        mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2),block_white_concrete)
-        mur_sol((x1,y1+1,midtailleZ-1),(midtailleX+1,y1+5,midtailleZ-1),block_white_concrete)
-        mur_sol((midtailleX,y1+1,midtailleZ),(midtailleX,y1+5,z2),block_white_concrete)
-        mur_sol((midtailleX,y1+1,z2-1),(x2,y1+5,z2-1),block_white_concrete)
-        
-        
-        mur_sol((x1,y1+1,z1+1),(x1,y1+4,midtailleZ-1),air)
-        
-        #sols/plafonds
-        mur_sol((x1,y1+4,z1),(x2,y1+4,midtailleZ),block_white_concrete)
-        mur_sol((x1,y1,z1),(x2,y1,midtailleZ),oak_planks)
-        mur_sol((midtailleX,y1+4,midtailleZ),(x2,y1+4,z2),block_white_concrete)
-        mur_sol((midtailleX,y1,midtailleZ),(x2,y1,z2),oak_planks)
-        mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),grass_block)
-        
-        poserFenetre((midtailleX,y1+1,midtailleZ+1),(midtailleX,y1+5,z2-1),glass)
-        poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1),glass)
-        poserFenetre((midtailleX+1,y1+1,z2-1),(x2-1,y1+5,z2-1),glass)
-        poserFenetre((x1+2,y1+1,z1),(x2-1,y1+5,z1),glass)
-        poserFenetre((x1+2,y1+1,midtailleZ-1),(midtailleX-1,y1+5,midtailleZ-1),glass)
-        
-        
-        
-      
-        if  (tailleZ-((z2-z1)//2))%2==0:
+                        
+                        
+                        
+                poserToit(co1,co2,hauteurMax,cotegarage,style,direction )    
+                
+                
     
-                poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-2),door_east)
-                poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-1),door_east)
-                mur_sol((x1,y1,z2-(tailleZ//4)-2),(x1+tailleX//2,y1,z2-(tailleZ//4)),block_quartz)
-                for i in range(tailleX):
-                    for j in range(tailleZ):
-                        if (x1+i< x1+(tailleX//2) and z2-j>z2-tailleZ//2 ) and(x1+i==x1 or z2-j==z2) and z2-j != z2-(tailleZ//4)-1 and z2-j != z2-(tailleZ//4):
-                            
-                            editor.placeBlock((x1+i,y1+1,z2-1-j),oak_fence)
-        else:
-             
-                poserPorte((x1+tailleX//2,hauteurMin+1,z2-(tailleZ//4)-1),door_east)
-                mur_sol((x1,y1,z2-(tailleZ//4)-1),(x1+tailleX//2,y1,z2-(tailleZ//4)),block_quartz)
-                for i in range(tailleX):
-                    for j in range(tailleZ):
-                        if (x1+i< x1+(tailleX//2) and z2-j>z2-tailleZ//2 ) and (x1+i==x1 or z2-j==z2) and z2-j != z2-(tailleZ//4):
-                            print(1)
-                            editor.placeBlock((x1+i,y1+1,z2-1-j),oak_fence)
-                          
+    elif direction=='south' :
+            door=Block(style['door'],{"facing": "north"})
+            if cotegarage=='right':
+                
+                                        
+                                        
+              #murs
+                #murs
+                poserGarage((midtailleX+1,y1+1,z2-2),(x2-1,y1+3,z2-2))
+                mur_sol((x1,y1+1,midtailleZ-1),(midtailleX,y1+5,midtailleZ-1),mur)
+                mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,z2   ),mur)
+                mur_sol((midtailleX,y1+1,midtailleZ),(midtailleX,y1+5,z2),mur)
+                mur_sol((x1,y1+1,z1),(x2,y1+5,z1),mur)
+                mur_sol((x1,y1+1,z1 ),(x1,y1+5,midtailleZ),mur)
                 
                 
                 
-        poserToit(co1,co2,hauteurMax,cotegarage)    
+               
+         
+                
+                #sols/plafonds
+                mur_sol((x1,y1+4,z1),(x2,y1+4,z2),mur)
+                mur_sol((x1,y1,z1),(x2,y1,z2),sol)
+                
+                mur_sol((x1,y1+4,midtailleZ),(midtailleX,y1+4,z2),air)
+                
+                mur_sol((x1,y1,midtailleZ),(midtailleX,y1,z2),grass)
+                
+                poserFenetre((x1+1,y1+1,midtailleZ-1),(midtailleX-1,y1+5,midtailleZ-1),glass)
+                poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,z2-1   ),glass)
+                poserFenetre((midtailleX,y1+1,midtailleZ+1),(midtailleX,y1+5,z2-2),glass)
+                poserFenetre((x1+1,y1+1,z1),(x2-1,y1+5,z1),glass)
+                poserFenetre((x1,y1+1,z1+1 ),(x1,y1+5,midtailleZ-1),glass)
+                
+                
+                
         
         
+                if  (((x2-x1)//2))%2==0:
+            
+                        poserPorte((x1+tailleX//4,hauteurMin+1,midtailleZ),door)
+                        poserPorte((x1+1+tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x1+tailleX//4,y1,midtailleZ),(x1+2+tailleX//4,y1,z2),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if  (x1+i< midtailleX and z1+j>=midtailleZ )and (x1+i==x1 or z1+j==z2-1)   and x1+i != x1+tailleX//4 and x1+i != x1+1+tailleX//4:
+                                    
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                else:
+                    
+                        poserPorte((x1+tailleX//4,hauteurMin+1,midtailleZ-1),door)
+                        mur_sol((x1+tailleX//4,y1,midtailleZ),(x1+1+tailleX//4,y1,z2),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i< midtailleX and z1+j>=midtailleZ )and (x1+i==x1 or z1+j==z2-1)  and x1+i != x1+tailleX//4:
+                                    print(1)
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                                
+                        
+                        
+                        
+                poserToit(co1,co2,hauteurMax,cotegarage,style,direction )    
+            
+            
+            
+            elif cotegarage=='left':
+                 #murs
+                #murs
+                poserGarage((x1+1,y1+1,z2-2),(midtailleX-1,y1+3,z2-2))
+                mur_sol((midtailleX,y1+1,midtailleZ-1),(x2,y1+5,midtailleZ-1),mur)
+                mur_sol((x2-1,y1+1,z1),(x2-1,y1+5,midtailleZ   ),mur)
+                mur_sol((x1,y1+1,z1),(x1,y1+5,z2),mur)
+                mur_sol((x1,y1+1,z1),(x2,y1+5,z1),mur)
+                mur_sol((midtailleX-1,y1+1,midtailleZ ),(midtailleX-1,y1+5,z2),mur)
+                
+                
+                
+               
+         
+                
+                #sols/plafonds
+                mur_sol((x1,y1+4,z1),(x2,y1+4,z2),mur)
+                mur_sol((x1,y1,z1),(x2,y1,z2),sol)
+                
+                mur_sol((midtailleX,y1+4,midtailleZ),(x2,y1+4,z2),air)
+                
+                mur_sol((midtailleX,y1,midtailleZ),(x2,y1,z2),grass)
+                
+                poserFenetre((midtailleX+1,y1+1,midtailleZ-1),(x2-1,y1+5,midtailleZ-1),glass)
+                poserFenetre((x2-1,y1+1,z1+1),(x2-1,y1+5,midtailleZ-1   ),glass)
+                poserFenetre((x1,y1+1,z1+1),(x1,y1+5,z2-1),glass)
+                poserFenetre((x1+1,y1+1,z1),(x2-1,y1+5,z1),glass)
+                poserFenetre((midtailleX-1,y1+1,midtailleZ+1 ),(midtailleX-1,y1+5,z2-2),glass)
+                
+                
+                
         
-    
-    print('Done')
-    
-    
+        
+                if  (((x2-x1)//2))%2==0:
+            
+                        poserPorte((x2-tailleX//4,hauteurMin+1,midtailleZ),door)
+                        poserPorte((x2-1-tailleX//4,hauteurMin+1,midtailleZ),door)
+                        mur_sol((x2-1-tailleX//4,y1,midtailleZ),(x2-3-tailleX//4,y1,z2),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i>= midtailleX and z1+j>=midtailleZ )and (x1+i==x2-1 or z1+j==z2-1)   and x1+i != x2-2-tailleX//4 and x1+i != x2-1-tailleX//4:
+                                    
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                else:
+                    
+                        poserPorte((x2-1-tailleX//4,hauteurMin+1,midtailleZ-1),door)
+                        mur_sol((x2-1-tailleX//4,y1,midtailleZ),(x2-2-tailleX//4,y1,z2),chemin)
+                        for i in range(tailleX):
+                            for j in range(tailleZ):
+                                if (x1+i>= midtailleX and z1+j>=midtailleZ )and (x1+i==x2-1 or z1+j==z2-1)  and x1+i != x2-1-tailleX//4:
+                                    print(1)
+                                    editor.placeBlock((x1+i,y1+1,z1+j),fence)
+                                
+                        
+                        
+                        
+                poserToit(co1,co2,hauteurMax,cotegarage,style,direction )    
+                
+                
+                
 if __name__=="__main__":
     
-    delete((-10,-60,-10),(90,-40,130)) 
     
-    house((10,-60,15),(86,-60,124),"left",10)
+    style_basique={
+        'mur':"white_concrete",
+        'sol':"oak_planks",
+        'grass':"grass_block",
+        'chemin':"quartz_block",
+        'fence':'oak_fence',
+        'toit_esca':'oak_stairs',
+        'toit_planche':"oak_planks",
+        'toit_slab':'oak_slab',
+        'glass':"glass",
+        'door':'oak_door'
+        
+        
+    }
+    
+    delete((-10,-60,-10),(50,-40,50)) 
+    
+    house((0,-60,10),(10,-60,20),"right",10,style_basique,'south')
+    
 
    
     

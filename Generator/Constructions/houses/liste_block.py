@@ -14,8 +14,8 @@ stairs_droite_retourner = Block("oak_stairs", {"facing": "north","half":"top"})
 stairs_gauche_retourner = Block("oak_stairs", {"facing": "south","half":"top"})
 
 
-stairs_quartz_devant = Block("quartz_stairs", {"facing": "east"})
-stairs_quartz_derriere = Block("quartz_stairs", {"facing": "west"})
+stairs_quartz_devant = Block("quartz_stairs", {"facing": "east","half":"top"})
+stairs_quartz_derriere = Block("quartz_stairs", {"facing": "west","half":"top"})
 stairs_quartz_droite = Block("quartz_stairs", {"facing": "north","half":"top"})
 stairs_quartz_gauche = Block("quartz_stairs", {"facing": "south", "half":"top"})
 
@@ -31,7 +31,7 @@ oak_log = Block("oak_log")
 spruce_wood= Block("spruce_wood")
 
 
-glass = Block("glass")
+
 black_stained_glass = Block("black_stained_glass")
 
 

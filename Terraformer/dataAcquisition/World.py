@@ -85,7 +85,7 @@ class World:
                     scanned.append(neighbor)
                     self.getNeighbors(neighbor)
                     if neighbor.isSurface():
-                        editor.placeBlock(neighbor.coordinates, place("minecraft:glass"))
+                        # editor.placeBlock(neighbor.coordinates, place("minecraft:glass"))
                         print(neighbor.coordinates)
                         self.propagate(neighbor.coordinates, scanned)
     

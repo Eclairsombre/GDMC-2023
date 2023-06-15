@@ -141,43 +141,6 @@ class Skeleton:
                                 print(line, "hey 1")
 
 
-### Execution ###
-
-
-from skimage.data import binary_blobs
-blobs = binary_blobs(16, volume_fraction=0.3, n_dim=3)
-
-# # # # # #
-import sys
-sys.path.append("Terraformer/dataAcquisition/")
-import World
-
-w = World.World()
-
-import sys
-sys.setrecursionlimit(w.length_x * w.length_y * w.length_z)
-
-w.propagate((1729, 102, 575))
-print("done")
-print(w.binaryImage())
-
-# # # # # #
-
-# print(blobs)
-# print("-----------------------------------------")
-# print(data, "date")
-
-skel = Skeleton()
-
-skel.setSkeleton(w.binaryImage())
-
-skel.parseGraph()
-print(skel.centers)
-print(skel.lines)
-print(skel.intersections)
-print(skel.coordinates)
-
-
 ### Visualisation ###
 
 
@@ -239,7 +202,7 @@ def heightmap(
     heightmap.save(mapName)
     #heightmapBiome.save(biomeName)
 
-def skeletonVisualisation(skeleton):
+def skeletonVisualisation(skeleton): # not working due to indicies
     editor = Editor()
 
     buildArea = editor.getBuildArea()
@@ -262,10 +225,11 @@ def skeletonVisualisation(skeleton):
         )
         for j in range(len(skeleton.lines[i])):
             print(skeleton.lines[i])
-            x = skeleton.coordinates[skeleton.lines[i][j]][0]+1689
-            y = skeleton.coordinates[skeleton.lines[i][j]][1]+68
-            z = skeleton.coordinates[skeleton.lines[i][j]][2]+570
-            editor.placeBlock((x, y, z), place("minecraft:white_concrete"))
+            print(j, "j", skeleton.lines[i][j], "h")
+            z = skeleton.coordinates[skeleton.lines[i][j]][0]
+            y = skeleton.coordinates[skeleton.lines[i][j]][1]
+            x = skeleton.coordinates[skeleton.lines[i][j]][2]
+            # editor.placeBlock((x, y, z), place("minecraft:white_concrete"))
             im.putpixel(
                 (
                     int(skeleton.coordinates[skeleton.lines[i][j]][2])-1,
@@ -296,6 +260,3 @@ def skeletonVisualisation(skeleton):
                 (255, 0, 255),
             )
     im.save(path, "PNG")
-
-heightmap()
-skeletonVisualisation(skel)

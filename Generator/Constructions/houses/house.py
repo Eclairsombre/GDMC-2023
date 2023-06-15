@@ -1181,10 +1181,20 @@ def poserGarage(co1,co2):
                 
             
 
-def house(co1,co2,cotegarage,hauteurMax,style,direction):# ,etage):
+def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
     """
     Minimun 10*10 
     """
+    
+    if nb_style==0:
+        style=style_basique
+    elif nb_style==1:
+        style=style_birch
+    elif nb_style==2:
+        style=style_end
+    else:
+        style=style_jungle
+    
     
     sol=Block(style['sol'])
     mur=Block(style['mur'])
@@ -1754,24 +1764,14 @@ def house(co1,co2,cotegarage,hauteurMax,style,direction):# ,etage):
 if __name__=="__main__":
     
     
-    style_basique={
-        'mur':"white_concrete",
-        'sol':"oak_planks",
-        'grass':"grass_block",
-        'chemin':"quartz_block",
-        'fence':'oak_fence',
-        'toit_esca':'oak_stairs',
-        'toit_planche':"oak_planks",
-        'toit_slab':'oak_slab',
-        'glass':"glass",
-        'door':'oak_door'
+   
         
         
-    }
+    
     
     delete((-10,-60,-10),(50,-40,50)) 
     
-    house((0,-60,10),(10,-60,20),"right",10,style_basique,'south')
+    house((0,-60,10),(10,-60,20),"right",10,1,'south')
     
 
    

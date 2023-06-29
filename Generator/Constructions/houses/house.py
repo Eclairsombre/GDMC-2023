@@ -15,36 +15,143 @@ def delete(co1,co2):
 
 
 def mur_sol(co1,co2,block):
+    x1=co1[0]
+    y1=co1[1]
+    z1=co1[2]
+    x2=co2[0]
+    y2=co2[1]
+    z2=co2[2]
+    
+    
+    if  x1<0 or x2<0:
+        if  x1<0 and x2>0:
+            tailleX=co2[0]-co1[0]
+            midtailleX=(tailleX//2)+x1
+        elif x1<0 and x2<0:
+        
+            tailleX=abs(co2[0])-abs(co1[0])
+            midtailleX=(tailleX//2)+x1
+    else:
+        
+        tailleX=co2[0]-co1[0]
+        midtailleX=(tailleX//2)+x1
+        
+    if  z1<0 or z2<0:
+        if  z1<0 and z2>0:
+            tailleZ=co2[2]-co1[2]
+            midtailleZ=(tailleZ//2)+z1
+        elif z1<0 and z2<0:
+        
+            tailleZ=abs(co2[2])-abs(co1[2])
+            midtailleZ=(tailleZ//2)+z1
+    else:
+        
+        tailleZ=co2[2]-co1[2]
+        midtailleZ=(tailleZ//2)+z1
     editor = Editor(buffering=  True) 
     
-    if co1[1]==co2[1]:
+    if y1==y2:
+        
          for i in range(abs(co2[0]-(co1[0]))):
             for j in range((abs((co2[2])-(co1[2])))):
                 editor.placeBlock((co1[0]+i,co1[1],co1[2]+j),block)
-    elif co2[0]==co1[0]:
-       
-        for i in range(abs(abs(co2[1])-abs(co1[1]))):
-            for j in range((abs(co2[2])-abs(co1[2]))):
+    elif x1==x2:
+        if  z1<0 or z2<0:
+            if  z1<0 and z2>=0:
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range((z2-z1)):
                
-                editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
+            elif z1<0 and z2<0:
                 
-    elif co2[2]==co1[2]:
-        
-        for i in range(abs(abs(co2[1])-abs(co1[1]))):
-            for j in range((abs(co2[0])-abs(co1[0]))):
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(abs(z2-z1)):
+               
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
+        else:
+            for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range((abs(co2[2])-abs(co1[2]))):
+               
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block)
             
-                editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
+                
+    elif z2==z1:
+        if  x1<0 or x2<0:
+            if  x1<0 and x2>=0:
+                print(abs(abs(co2[1])-abs(co1[1])))
+                print(x2-x1)
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(x2-x1):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
+            elif x1<0 and x2<0:
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(abs(x2-x1)):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
+        else:
+             for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range( (abs(co2[0])-abs(co1[0]))):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block)
+            
+                
+                        
+    
+   
                 
     
 def poserEscalier(co1,co2,type):
+    
     editor = Editor(buffering=  True) 
-    if co1[0]==co2[0]:
-        for i in range((abs(co2[2])-abs(co1[2]))):
-            editor.placeBlock((co1[0],co1[1],co1[2]+i),type)
-    if co1[2]==co2[2]:
-        for i in range((abs(co2[0])-abs(co1[0]))):
-            editor.placeBlock((co1[0]+i,co1[1],co1[2]),type)
-     
+    x1=co1[0]
+    y1=co1[1]
+    z1=co1[2]
+    x2=co2[0]
+    y2=co2[1]
+    z2=co2[2]
+    
+    if x1==x2:
+        
+        if  z1<0 or z2<0:
+            
+            if  z1<0 and z2>=0:
+               
+                    for i in range((z2-z1)):
+                        print(1)
+                        editor.placeBlock((co1[0],co1[1],co1[2]+i),type)
+            elif z1<0 and z2<0:
+                
+                
+                    for i in range(abs(z2-z1)):
+               
+                        editor.placeBlock((co1[0],co1[1],co1[2]+i),type)
+        else:
+                    print(z1)
+            
+                    for i in range((abs(co2[2])-abs(co1[2]))):
+                        editor.placeBlock((co1[0],co1[1],co1[2]+i),type)
+            
+                
+    elif z2==z1:
+        print(x1)
+        if  x1<0 or x2<0:
+            if  x1<0 and x2>=0:
+                
+                
+                for i in range(x2-x1):
+            
+                        editor.placeBlock((co1[0]+i,co1[1],co1[2]),type)
+            elif x1<0 and x2<0:
+                
+                    for i in range(abs(x2-x1)):
+            
+                        editor.placeBlock((co1[0]+i,co1[1],co1[2]),type)
+        else:
+           
+                    for i in range((abs(co2[0])-abs(co1[0]))):
+                        editor.placeBlock((co1[0]+i,co1[1],co1[2]),type)
+   
                 
 def poserPorte(co,type):
     editor = Editor(buffering=  True) 
@@ -72,12 +179,35 @@ def poserToit(co1,co2,hauteurMax,cotegarage,style,direction):
     toit_slab=Block(style['toit_slab'])
     mur=Block(style['mur'])
     
-    tailleX=abs(co2[0])-abs(co1[0])
-    editor = Editor(buffering=  True) 
-    tailleZ=abs(co2[2])-abs(co1[2])
-    midtailleX=(tailleX//2)+x1
-    midtailleZ=(tailleZ//2)+z1
     
+    editor = Editor(buffering=  True) 
+    if  x1<0 or x2<0:
+        if  x1<0 and x2>=0:
+            tailleX=x2-x1
+            midtailleX=(tailleX//2)+x1
+        elif x1<0 and x2<0:
+        
+            tailleX=abs(co2[0]-co1[0])
+            midtailleX=(tailleX//2)+x1
+    else:
+        
+        tailleX=co2[0]-co1[0]
+        midtailleX=(tailleX//2)+x1
+        
+    if  z1<0 or z2<0:
+        if  z1<0 and z2>=0:
+            tailleZ=co2[2]-co1[2]
+            midtailleZ=(tailleZ//2)+z1
+        elif z1<0 and z2<0:
+        
+            tailleZ=abs(co2[2]-co1[2])
+            midtailleZ=(tailleZ//2)+z1
+    else:
+        
+        tailleZ=co2[2]-co1[2]
+        midtailleZ=(tailleZ//2)+z1
+        
+        
     if direction=='west':
         if cotegarage=='left':
             if x1==0 and z1==0:
@@ -1226,8 +1356,36 @@ def house(co1,co2,cotegarage,hauteurMax,nb_style,direction):# ,etage):
     x2=co2[0]
     y2=co2[1]
     z2=co2[2]
-    midtailleX=(tailleX//2)+x1
-    midtailleZ=(tailleZ//2)+z1
+    
+    if  x1<0 or x2<0:
+        if  x1<0 and x2>=0:
+            tailleX=x2-x1
+            midtailleX=(tailleX//2)+x1
+        elif x1<0 and x2<0:
+            print(abs(co2[0]-co1[0]),(tailleX//2)+x1)
+            tailleX=abs(co2[0]-co1[0])
+            midtailleX=(tailleX//2)+x1
+    else:
+        
+        tailleX=co2[0]-co1[0]
+        midtailleX=(tailleX//2)+x1
+        
+    if  z1<0 or z2<0:
+        if  z1<0 and z2>=0:
+            tailleZ=co2[2]-co1[2]
+            midtailleZ=(tailleZ//2)+z1
+        elif z1<0 and z2<0:
+        
+            tailleZ=abs(co2[2]-co1[2])
+            midtailleZ=(tailleZ//2)+z1
+    else:
+        
+        tailleZ=co2[2]-co1[2]
+        midtailleZ=(tailleZ//2)+z1
+        
+    
+    
+    
     
     if direction=='west':
         door=Block(style['door'],{"facing": "east"})
@@ -1769,9 +1927,9 @@ if __name__=="__main__":
         
     nb_style=randint(0,3)
     
-    delete((-10,-60,-10),(50,-40,50)) 
+    delete((-40,-60,-40),(50,-40,50)) 
     
-    house((0,-60,10),(10,-60,20),"right",10,nb_style,'east')
+    house((-20,-60,-20),(-10,-60,-10),"right",10,nb_style,'north')
     
 
    

@@ -1240,24 +1240,87 @@ def poserFenetre(co1,co2,type):
             
 
 def poserGarage(co1,co2):
+    
+    x1=co1[0]
+    y1=co1[1]
+    z1=co1[2]
+    x2=co2[0]
+    y2=co2[1]
+    z2=co2[2]
     editor = Editor(buffering=  True) 
-    x=abs((co2[0])-(co1[0]))
-    z=abs((co2[2])-(co1[2]))
-    
-                
-    if co2[0]==co1[0]:
-     
-        for i in range(abs(abs(co2[1])-abs(co1[1]))):
-            for j in range((abs(co2[2])-abs(co1[2]))):
-               
-                editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block_quartz)
-                
-    elif co2[2]==co1[2]:
-        for i in range(abs(abs(co2[1])-abs(co1[1]))):
-            for j in range((abs(co2[0])-abs(co1[0]))):
+    if  x1<0 or x2<0:
+        if  x1<0 and x2>=0:
+            x=x2-x1
             
-                editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block_quartz)
+        elif x1<0 and x2<0:
+            
+            x=abs(co2[0]-co1[0])
+            
+    else:
+        
+        x=co2[0]-co1[0]
+        
+    if  z1<0 or z2<0:
+        if  z1<0 and z2>=0:
+            z=co2[2]-co1[2]
+            
+        elif z1<0 and z2<0:
+        
+            z=abs(co2[2]-co1[2])
+            
+    else:
+        
+        z=co2[2]-co1[2]
+        
+        
     
+       
+       
+    
+    if x1==x2:
+        if  z1<0 or z2<0:
+            if  z1<0 and z2>=0:
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range((z2-z1)):
+               
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block_quartz)
+            elif z1<0 and z2<0:
+                
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(abs(z2-z1)):
+               
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block_quartz)
+        else:
+            for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range((abs(co2[2])-abs(co1[2]))):
+               
+                        editor.placeBlock((co1[0],co1[1]+i,co1[2]+j),block_quartz)
+            
+                
+    elif z2==z1:
+        if  x1<0 or x2<0:
+            if  x1<0 and x2>=0:
+                print(abs(abs(co2[1])-abs(co1[1])))
+                print(x2-x1)
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(x2-x1):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block_quartz)
+            elif x1<0 and x2<0:
+                for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range(abs(x2-x1)):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block_quartz)
+        else:
+             for i in range(abs(abs(co2[1])-abs(co1[1]))):
+                    for j in range( (abs(co2[0])-abs(co1[0]))):
+            
+                        editor.placeBlock((co1[0]+j,co1[1]+i,co1[2]),block_quartz) 
+       
+       
+       
+         
+  
     
     
     if co1[0]==co2[0]:
